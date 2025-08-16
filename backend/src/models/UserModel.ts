@@ -1,4 +1,5 @@
-interface UserModel {
+export interface UserModel {
+  id?: string,
   fullName: string;
   contact: number;
   email: string;
@@ -6,4 +7,3 @@ interface UserModel {
   emergencyContact: number;
 }
 
-export default UserModel;
