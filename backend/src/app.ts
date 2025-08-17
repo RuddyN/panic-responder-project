@@ -1,14 +1,17 @@
 import express from "express";
 import { PanicAlertService } from "./modules/panic-alert/panic-alert.service";
+import { UserService } from "./modules/users/user.service";
 
 export const app = express();
 const port = 3000;
 
 const panicAlertService = new PanicAlertService();
+const userService = new UserService();
+
 app.use(express.json());
 
 app.get("/users", (req, res) => {
-  const users = panicAlertService.fetchUsers();
+  const users = userService.fetchUsers();
   res.json({ users });
 });
 
