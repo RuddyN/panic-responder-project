@@ -7,13 +7,12 @@
     "build": "tsc",
     "start": "node dist/app.js",
     "start-db": "node dist/database/app.js",
-    "dev": "nodemon --watch src --exec \"yarn run build && yarn run start\"",
-    "test": "jest"
+    "dev": "nodemon --watch src --exec \"yarn run build && yarn start-db && yarn run start\"",
+    "test": "jest --detectOpenHandles --verbose"
   },
   "dependencies": {
     "better-sqlite3": "^12.2.0",
-    "express": "^5.1.0",
-    "jest": "^30.0.5"
+    "express": "^5.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.28.3",
@@ -23,8 +22,11 @@
     "@types/express": "^5.0.3",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.3.0",
+    "@types/supertest": "^6.0.3",
     "babel-jest": "^30.0.5",
+    "jest": "^30.0.5",
     "nodemon": "^3.1.10",
+    "supertest": "^7.1.4",
     "ts-jest": "^29.4.1",
     "typescript": "^5.9.2"
   }

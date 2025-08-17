@@ -1,7 +1,6 @@
 import {
   insertPanicAlert,
   insertUser,
-  getPanicAlertById,
   getUserById,
   patchPanicAlert,
 } from "../database/app";
@@ -95,4 +94,5 @@ describe("Panic alerts", () => {
   });
 
   test.todo('handle errors')
+  test.todo('add tests for get all users and all alerts')
 });

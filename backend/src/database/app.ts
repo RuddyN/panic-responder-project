@@ -13,7 +13,7 @@ db.exec(dropUserTable);
 db.exec(dropRespondersTable);
 
 const createPanicAlertTable = `
-  CREATE TABLE PanicAlerts (
+  CREATE TABLE panicAlerts (
     id INTEGER PRIMARY KEY,
     location STRING NOT NULL,
     status STRING NOT NULL,
@@ -23,7 +23,7 @@ const createPanicAlertTable = `
 `;
 
 const createUserTable = `
- CREATE TABLE Users (
+ CREATE TABLE users (
     id INTEGER PRIMARY KEY,
     fullName STRING NOT NULL,
     contact INTEGER NOT NULL,
@@ -34,7 +34,7 @@ const createUserTable = `
 `;
 
 const createRespondersTable = `
- CREATE TABLE Responders (
+ CREATE TABLE responders (
     id INTEGER PRIMARY KEY,
     company STRING NOT NULL,
     contact INTEGER NOT NULL,
@@ -49,7 +49,7 @@ db.exec(createUserTable);
 db.exec(createRespondersTable);
 
 export const insertUser = (user: UserModel) => {
-  const insertUserQuery = db.prepare(`INSERT INTO Users (
+  const insertUserQuery = db.prepare(`INSERT INTO users (
       fullName, contact, email, physicalAddress, emergencyContact
     ) VALUES (?, ?, ?, ?, ?)`);
 
@@ -62,17 +62,51 @@ export const insertUser = (user: UserModel) => {
   );
 };
 
+const userData = [
+  {
+    fullName: "John Doe",
+    contact: +275674329988,
+    email: "john@test.com",
+    physicalAddress: "13 Avenue",
+    emergencyContact: +275674329988,
+  },
+  {
+    fullName: "Peter Pan",
+    contact: +275674329988,
+    email: "peter@test.com",
+    physicalAddress: "15 Avenue",
+    emergencyContact: +275674329988,
+  },
+  {
+    fullName: "Harry Potter",
+    contact: +275674529988,
+    email: "harry@test.com",
+    physicalAddress: "14 Avenue",
+    emergencyContact: +275674669988,
+  },
+];
+
+userData.forEach((data) => {
+  insertUser(data);
+});
+
+export const getAllUsers = () => {
+  const users = db.prepare("SELECT * FROM users").all();
+
+  return users;
+};
+
 export const insertPanicAlert = (alert: PanicAlertModel) => {
-  const insertPanicAlertQuery = db.prepare(`INSERT INTO PanicAlerts (
+  const insertPanicAlertQuery = db.prepare(`INSERT INTO panicAlerts (
       location, status, userId
-    ) VALUES (?, ?, ?, ?, ?)`);
+    ) VALUES (?, ?, ?)`);
 
   insertPanicAlertQuery.run(alert.location, alert.status, alert.userId);
 };
 
 export const patchPanicAlert = (alert: PanicAlertModel) => {
   const updatePanicAlertQuery = db.prepare(
-    `UPDATE PanicAlerts SET location = ?, status = ?, responderId = ? WHERE id = ?`
+    `UPDATE panicAlerts SET location = ?, status = ?, responderId = ? WHERE id = ?`
   );
 
   updatePanicAlertQuery.run(
@@ -84,15 +118,21 @@ export const patchPanicAlert = (alert: PanicAlertModel) => {
 };
 
 export const getUserById = (id: number) => {
-  const user = db.prepare("SELECT * FROM Users WHERE id=?").get(id);
+  const user = db.prepare("SELECT * FROM users WHERE id=?").get(id);
 
   return user;
 };
 
 export const getPanicAlertById = (id: number) => {
-  const alert = db.prepare("SELECT * FROM PanicAlerts WHERE id=?").get(id);
+  const alert = db.prepare("SELECT * FROM panicAlerts WHERE id=?").get(id);
 
   return alert;
+};
+
+export const getAllPanicAlerts = () => {
+  const alerts = db.prepare("SELECT * FROM panicAlerts").all();
+console
+  return alerts;
 };
 
 // db.close()

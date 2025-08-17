@@ -1,12 +1,35 @@
-    import express from 'express';
+import express from "express";
+import { PanicAlert } from "./modules/panic-alert.service";
 
-    const app = express();
-    const port = 3000;
+export const app = express();
+const port = 3000;
 
-    app.get('/', (req, res) => {
-      res.send('Hello world!');
+const panicAlertService = new PanicAlert();
+app.use(express.json());
+
+app.get("/users", (req, res) => {
+  const users = panicAlertService.fetchUsers();
+  res.json({ users });
+});
+
+app.post("/panic-alerts", (req, res) => {
+  try {
+    panicAlertService.addPanicAlert(req.body);
+    res.send({
+      status: 200,
     });
+  } catch (error) {
+    console.error(
+      `something went wrong while calling the alert service ${error}`
+    );
+  }
+});
 
-    app.listen(port, () => {
-      console.log(`Server running at http://localhost:${port}`);
-    });
+app.get("/panic-alerts", (req, res) => {
+  const response = panicAlertService.fetchPanicAlerts()
+  res.json({alerts: response})
+})
+
+app.listen(port, () => {
+  console.log(`Server running at http://localhost:${port}`);
+});
