@@ -2,7 +2,6 @@
 export enum PanicStatus {
   NEW,
   ASSIGNED,
-  PENDING,
   RESOLVED
 }
 
