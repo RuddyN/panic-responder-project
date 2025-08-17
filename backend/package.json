@@ -8,7 +8,7 @@
     "start": "node dist/app.js",
     "start-db": "node dist/database/app.js",
     "dev": "nodemon --watch src --exec \"yarn run build && yarn start-db && yarn run start\"",
-    "test": "jest --detectOpenHandles --verbose"
+    "test": "jest"
   },
   "dependencies": {
     "better-sqlite3": "^12.2.0",

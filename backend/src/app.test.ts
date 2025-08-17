@@ -35,9 +35,8 @@ jest.mock("./database/app.ts", () => ({
   ]),
 }));
 
-// TODO: Should close server
-
 describe("App Controller", () => {
+  
   test("Should add a panic", async () => {
     const res = await request(app).post("/panic-alerts").send({
       location: "34'235'352",
@@ -52,5 +51,6 @@ describe("App Controller", () => {
     const res = await request(app).get("/panic-alerts");
 
     expect(res.statusCode).toEqual(200);
+    expect(getAllPanicAlerts).toHaveBeenCalled()
   });
 });

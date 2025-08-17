@@ -1,10 +1,10 @@
 import express from "express";
-import { PanicAlert } from "./modules/panic-alert.service";
+import { PanicAlertService } from "./modules/panic-alert/panic-alert.service";
 
 export const app = express();
 const port = 3000;
 
-const panicAlertService = new PanicAlert();
+const panicAlertService = new PanicAlertService();
 app.use(express.json());
 
 app.get("/users", (req, res) => {
@@ -26,10 +26,12 @@ app.post("/panic-alerts", (req, res) => {
 });
 
 app.get("/panic-alerts", (req, res) => {
-  const response = panicAlertService.fetchPanicAlerts()
-  res.json({alerts: response})
-})
-
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
+  const response = panicAlertService.fetchPanicAlerts();
+  res.json({ alerts: response });
 });
+
+if (process.env["NODE_ENV"] !== "test") {
+  app.listen(port, () => {
+    console.info(`Server running at http://localhost:${port}`);
+  });
+}
