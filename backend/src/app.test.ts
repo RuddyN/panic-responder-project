@@ -16,7 +16,8 @@ jest.mock("./database/app.ts", () => ({
     emergencyContact: +27988909902,
   })),
   getPanicAlertById: jest.fn(() => ({
-    location: "34'235'352",
+    latitude: 26.09,
+    longitude: 33.59,
     status: PanicStatus.NEW,
     userId: 235235,
   })),
@@ -28,7 +29,8 @@ jest.mock("./database/app.ts", () => ({
   }),
   getAllPanicAlerts: jest.fn(() => [
     {
-      location: "34'235'352",
+      latitude: 26.09,
+      longitude: 33.59,
       status: PanicStatus.NEW,
       userId: 235235,
     },
@@ -36,10 +38,10 @@ jest.mock("./database/app.ts", () => ({
 }));
 
 describe("App Controller", () => {
-  
   test("Should add a panic", async () => {
     const res = await request(app).post("/panic-alerts").send({
-      location: "34'235'352",
+      latitude: 26.09,
+      longitude: 33.59,
       status: PanicStatus.NEW,
       userId: 235235,
     });
@@ -51,6 +53,6 @@ describe("App Controller", () => {
     const res = await request(app).get("/panic-alerts");
 
     expect(res.statusCode).toEqual(200);
-    expect(getAllPanicAlerts).toHaveBeenCalled()
+    expect(getAllPanicAlerts).toHaveBeenCalled();
   });
 });

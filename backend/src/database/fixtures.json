@@ -1,0 +1,56 @@
+{
+  "userData": [
+    {
+      "fullName": "John Doe",
+      "contact": 275674329988,
+      "email": "john@test.com",
+      "physicalAddress": "13 Avenue",
+      "emergencyContact": 275674329988
+    },
+    {
+      "fullName": "Peter Pan",
+      "contact": 275674329988,
+      "email": "peter@test.com",
+      "physicalAddress": "4 Smith",
+      "emergencyContact": 275674329988
+    },
+    {
+      "fullName": "Harry Potter",
+      "contact": 275674529988,
+      "email": "harry@test.com",
+      "physicalAddress": "14 Avenue",
+      "emergencyContact": 275674669988
+    }
+  ],
+  "panicAlertData": [
+    {
+      "latitude": -25.7566,
+      "longitude": 28.1914,
+      "status": "NEW",
+      "userId": 1
+    },
+    {
+      "latitude": -25.7566,
+      "longitude": 28.1914,
+      "status": "ASSIGNED",
+      "userId": 2,
+      "responderId": 1
+    }
+  ],
+  "responderData": [
+    {
+      "company": "ADT",
+      "contact": 275674329988,
+      "email": "ADT@gmail.com",
+      "physicalAddress": "12 Smith",
+      "serviceType": "Security"
+    },
+    {
+      "company": "Police",
+      "contact": 275674329222,
+      "email": "police@gmail.com",
+      "physicalAddress": "12 Sandton Drive",
+      "serviceType": "Security"
+    }
+  ]
+}

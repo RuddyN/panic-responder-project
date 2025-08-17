@@ -30,7 +30,7 @@ app.post("/panic-alerts", (req, res) => {
 
 app.get("/panic-alerts", (req, res) => {
   const response = panicAlertService.fetchPanicAlerts();
-  res.json({ alerts: response });
+  res.json(response);
 });
 
 if (process.env["NODE_ENV"] !== "test") {

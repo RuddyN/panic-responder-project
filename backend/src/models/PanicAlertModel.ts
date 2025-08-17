@@ -8,8 +8,9 @@ export enum PanicStatus {
 
 export interface PanicAlertModel {
   id?: number,
-  location: string,
+  latitude: number,
+  longitude: number,
   status: PanicStatus,
   userId: number,
-  responderId?: number
+  responderId?: number | null
 }
