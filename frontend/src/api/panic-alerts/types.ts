@@ -1,4 +1,4 @@
-type StatusTypes = "NEW" | "ASSIGNED" | "PENDING" | "RESOLVED";
+type StatusTypes = "NEW" | "ASSIGNED" | "RESOLVED";
 
 export type ResponseAlert = {
   id: number;
