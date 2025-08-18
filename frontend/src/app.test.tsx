@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 
 import { describe, it, expect } from "vitest";
 import App from "./App";
@@ -13,13 +13,17 @@ const testQueryClient = new QueryClient({
 });
 
 describe("Panic Alert App", () => {
-  it("renders a greeting", () => {
+  it("renders a greeting", async () => {
     render(
       <QueryClientProvider client={testQueryClient}>
         <App />
       </QueryClientProvider>
     );
     expect(true).toBeTruthy();
-    expect(screen.getByText('Panic Alert System')).toBeInTheDocument()
+    expect(screen.getByText("Panic Alert System")).toBeInTheDocument();
+
+    await waitFor(() => {
+      expect(screen.getByTestId("total-alerts")).toHaveTextContent("2");
+    });
   });
 });

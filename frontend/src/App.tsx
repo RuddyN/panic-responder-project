@@ -26,7 +26,7 @@ function App() {
         </div>
         <div className="stats-block">
           <h3>Total Today</h3>
-          <p>4</p>
+          <p data-testid="total-alerts">{panicAlerts?.length}</p>
         </div>
         <div className="stats-block">
           <h3>Top responder</h3>
