@@ -1,0 +1,54 @@
+.details-container {
+  padding: 1rem;
+
+  .alert-details {
+    display: flex;
+    gap: 2rem;
+  }
+
+  .header {
+    margin-bottom: 1rem;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+
+    .details-cta {
+      display: flex;
+      justify-content: center;
+      font-size: 14px;
+      gap: 1rem;
+
+      button {
+        padding: 0 8px;
+        background-color: #86236c;
+        color: white;
+      }
+
+      button:hover {
+        opacity: 0.9;
+      }
+    }
+  }
+
+  td {
+    text-align: left;
+    padding: 0 0.5rem;
+    font-size: 14px;
+  }
+
+  table {
+    margin-bottom: 1rem;
+  }
+
+  tr {
+    td:first-of-type {
+      color: gray;
+    }
+  }
+
+  input {
+    border: solid 1px lightgray;
+    border-radius: 0.2rem;
+    padding: 4px;
+  }
+}

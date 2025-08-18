@@ -13,17 +13,18 @@ const testQueryClient = new QueryClient({
 });
 
 describe("Panic Alert App", () => {
-  it("renders a greeting", async () => {
+  it("renders a page with stats", async () => {
     render(
       <QueryClientProvider client={testQueryClient}>
         <App />
       </QueryClientProvider>
     );
-    expect(true).toBeTruthy();
     expect(screen.getByText("Panic Alert System")).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByTestId("total-alerts")).toHaveTextContent("2");
     });
   });
+
+  it.todo('find a way to test the map being clicked')
 });

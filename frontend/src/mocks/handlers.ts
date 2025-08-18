@@ -1,21 +1,12 @@
 import { http, HttpResponse } from "msw";
+import fixture from './fixture.json'
 
 export const handlers = [
   http.get("http://localhost:3000/panic-alerts", () => {
-    return HttpResponse.json([
-      {
-        latitude: -25.7566,
-        longitude: 28.1914,
-        status: "NEW",
-        userId: 1,
-      },
-      {
-        latitude: -25.6682,
-        longitude: 27.2386,
-        status: "ASSIGNED",
-        userId: 2,
-        responderId: 1,
-      },
-    ]);
+    return HttpResponse.json(fixture.panicAlertData);
+  }),
+
+  http.get("http://localhost:3000/panic-alerts/1", () => {
+    return HttpResponse.json(fixture.panicAlertDetails);
   }),
 ];
