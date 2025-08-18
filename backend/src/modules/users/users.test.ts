@@ -9,10 +9,10 @@ jest.mock("./../../database/app.ts", () => ({
   getUserById: jest.fn(() => ({
     id: 235235,
     fullName: "John Doe",
-    contact: +27988909900,
+    contact: 27988909900,
     email: "john@gmail.com",
     physicalAddress: "14 Avenue",
-    emergencyContact: +27988909902,
+    emergencyContact: 27988909902,
   })),
 }));
 

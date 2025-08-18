@@ -26,13 +26,19 @@
     {
       "latitude": -25.7566,
       "longitude": 28.1914,
+      "location": "Pretoria",
       "status": "NEW",
+      "createdAt": "Aug 17 2025 13:40:22",
+      "updatedAt": "Aug 17 2025 13:40:22",
       "userId": 1
     },
     {
       "latitude": -25.6682,
       "longitude": 27.2386,
+      "location": "Sandton",
       "status": "ASSIGNED",
+      "createdAt": "Aug 11 2025 13:40:22",
+      "updatedAt": "Aug 17 2025 13:40:22",
       "userId": 2,
       "responderId": 1
     }
@@ -41,15 +47,23 @@
     {
       "company": "ADT",
       "contact": 275674329988,
+      "companyContact": 275674329988,
       "email": "ADT@gmail.com",
-      "physicalAddress": "12 Smith",
+      "latitude": -25.7566,
+      "longitude": 28.1914,
+      "location": "Pretoria",
+      "vehicleInfo": "TY 78 FG GP",
       "serviceType": "Security"
     },
     {
-      "company": "Police",
-      "contact": 275674329222,
-      "email": "police@gmail.com",
-      "physicalAddress": "12 Sandton Drive",
+      "company": "Red Guard Security",
+      "contact": 275674329988,
+      "companyContact": 275674329988,
+      "email": "redGuard@gmail.com",
+      "latitude": -25.7566,
+      "longitude": 28.1914,
+      "location": "Sandton",
+      "vehicleInfo": "ZZ 78 FG GP",
       "serviceType": "Security"
     }
   ]

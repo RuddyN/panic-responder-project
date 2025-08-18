@@ -17,6 +17,8 @@ app.get("/users", (req, res) => {
   res.json({ users });
 });
 
+//TODO handle errors
+
 app.post("/panic-alerts", (req, res) => {
   try {
     panicAlertService.addPanicAlert(req.body);
@@ -33,6 +35,20 @@ app.post("/panic-alerts", (req, res) => {
 app.get("/panic-alerts", (req, res) => {
   const response = panicAlertService.fetchPanicAlerts();
   res.json(response);
+});
+
+app.get(`/panic-alerts/:alertId`, (req, res) => {
+  const alertId = req.params.alertId;
+  const response = panicAlertService.getPanicAlertDetails(parseInt(alertId));
+  res.json(response);
+});
+
+app.put("/panic-alerts", (req, res) => {
+  const response = panicAlertService.updatePanicAlert(req.body);
+  res.send({
+    status: 200,
+    body: response,
+  });
 });
 
 if (process.env["NODE_ENV"] !== "test") {

@@ -1,6 +1,10 @@
 import Database from "better-sqlite3";
 import { UserModel } from "../models/UserModel";
-import { PanicAlertModel, PanicStatus } from "../models/PanicAlertModel";
+import {
+  PanicAlertModel,
+  PanicStatus,
+  ResponderModel,
+} from "../models/PanicAlertModel";
 import fixtures from "./fixtures.json";
 
 const db = new Database("app.db");
@@ -18,6 +22,9 @@ const createPanicAlertTable = `
     id INTEGER PRIMARY KEY,
     latitude DECIMAL(10, 8) NOT NULL,
     longitude DECIMAL(11, 8) NOT NULL,
+    location STRING NOT NULL,
+    createdAt STRING NOT NULL,
+    updatedAt STRING NOT NULL,
     status STRING NOT NULL,
     userId INTEGER NOT NULL,
     responderId INTEGER
@@ -41,7 +48,11 @@ const createRespondersTable = `
     company STRING NOT NULL,
     contact INTEGER NOT NULL,
     email STRING NOT NULL,
-    physicalAddress STRING,
+    companyContact INTEGER NOT NULL,
+    latitude DECIMAL(10, 8) NOT NULL,
+    longitude DECIMAL(11, 8) NOT NULL,
+    location STRING NOT NULL,
+    vehicleInfo STRING NOT NULL,
     serviceType STRING NOT NULL
   )
 `;
@@ -76,13 +87,16 @@ export const getAllUsers = () => {
 
 export const insertPanicAlert = (alert: PanicAlertModel) => {
   const insertPanicAlertQuery = db.prepare(`INSERT INTO panicAlerts (
-      latitude, longitude, status, userId, responderId
-    ) VALUES (?, ?, ?, ?, ?)`);
+      latitude, longitude, location, status, createdAt, updatedAt, userId, responderId
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
 
   insertPanicAlertQuery.run(
     alert.latitude,
     alert.longitude,
+    alert.location,
     alert.status.toString(),
+    alert.createdAt,
+    alert.updatedAt,
     alert.userId,
     alert.responderId
   );
@@ -93,35 +107,68 @@ fixtures.panicAlertData.forEach((data) => {
   insertPanicAlert({ ...data, status: data.status as unknown as PanicStatus });
 });
 
+export const insertResponderAlert = (responder: ResponderModel) => {
+  const insertResponderQuery = db.prepare(`INSERT INTO responders (
+      company, contact, companyContact, email, latitude, longitude, location, vehicleInfo, serviceType 
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+
+  insertResponderQuery.run(
+    responder.company,
+    responder.contact,
+    responder.companyContact,
+    responder.email,
+    responder.latitude,
+    responder.longitude,
+    responder.location,
+    responder.vehicleInfo,
+    responder.serviceType
+  );
+};
+
+fixtures.responderData.forEach((data) => {
+  insertResponderAlert(data);
+});
+
 export const patchPanicAlert = (alert: PanicAlertModel) => {
   const updatePanicAlertQuery = db.prepare(
-    `UPDATE panicAlerts SET latitude = ?, longitude = ?, status = ?, responderId = ? WHERE id = ?`
+    `UPDATE panicAlerts SET latitude = ?, longitude = ?, location = ?, status = ?, createdAt = ?, updatedAt = ?, userId = ?, responderId = ? WHERE id = ?`
   );
 
   updatePanicAlertQuery.run(
     alert.latitude,
     alert.longitude,
+    alert.location,
     alert.status,
+    alert.createdAt,
+    alert.updatedAt,
+    alert.userId,
     alert.responderId,
     alert.id
   );
 };
 
-export const getUserById = (id: number) => {
+export const getUserById = (id: number): UserModel => {
   const user = db.prepare("SELECT * FROM users WHERE id=?").get(id);
 
-  return user;
+  return user as UserModel;
 };
 
-export const getPanicAlertById = (id: number) => {
+export const getPanicAlertById = (id: number): PanicAlertModel => {
   const alert = db.prepare("SELECT * FROM panicAlerts WHERE id=?").get(id);
 
-  return alert;
+  return alert as PanicAlertModel;
 };
 
-export const getAllPanicAlerts = () => {
+export const getAllPanicAlerts = (): PanicAlertModel[] => {
   const alerts = db.prepare("SELECT * FROM panicAlerts").all();
-  return alerts;
+
+  return alerts as PanicAlertModel[];
+};
+
+export const getResponderById = (id: number) => {
+  const responder = db.prepare("SELECT * FROM responders WHERE id=?").get(id);
+
+  return responder as ResponderModel;
 };
 
 // db.close()
