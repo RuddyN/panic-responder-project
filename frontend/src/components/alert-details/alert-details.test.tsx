@@ -20,7 +20,7 @@ describe("AlertDetails", () => {
   test("Should show details for an alert", async () => {
     render(
       <QueryClientProvider client={testQueryClient}>
-        <AlertDetails panicAlert={fixture.panicAlertData[1] as PanicAlert} />
+        <AlertDetails panicAlert={fixture.panicAlertData[0] as PanicAlert} />
       </QueryClientProvider>
     );
 

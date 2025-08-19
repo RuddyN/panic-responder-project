@@ -7,7 +7,7 @@ import {
 } from "../api/panic-alerts";
 
 const PANIC_ALERTS_QUERY_KEY = "panic-alerts";
-const PANIC_ALERT_DETAILS_QUERY_KEY = "panic-alert-details";
+export const PANIC_ALERT_DETAILS_QUERY_KEY = "panic-alert-details";
 
 export function usePanicAlerts() {
   return useQuery<PanicAlert[], Error>({
@@ -21,6 +21,7 @@ export function usePanicAlertDetails(id: number) {
     queryKey: [PANIC_ALERT_DETAILS_QUERY_KEY, id],
     queryFn: () => getPanicAlertDetails(id),
     enabled: !!id,
+    staleTime: 0,
   });
 }
 

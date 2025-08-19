@@ -1,4 +1,5 @@
 export type Responder = {
+  id: number;
   company: string;
   contact: number;
   companyContact: number;

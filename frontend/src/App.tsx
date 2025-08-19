@@ -7,6 +7,7 @@ import { AlertDetails } from "./components/alert-details/AlertDetails";
 import { useResponders } from "./hooks/responder";
 import type { Responder } from "./api/responders/types";
 import { CarFrontIcon } from "lucide-react";
+import { ResponderDetails } from "./components/responder-details/ResponderDetails";
 
 function App() {
   const { data: panicAlerts } = usePanicAlerts(); // only get new and assigned alerts
@@ -23,8 +24,18 @@ function App() {
     }
 
     if (selectedResponder) {
-      return <div>Responder details</div>;
+      return <ResponderDetails responder={selectedResponder} />;
     }
+  };
+
+  const handleAlertSelect = (alert: PanicAlert) => {
+    setSelectedResponder(undefined);
+    setSelectedAlert(alert);
+  };
+
+  const handleResponderSelect = (responder: Responder) => {
+    setSelectedAlert(undefined);
+    setSelectedResponder(responder);
   };
 
   return (
@@ -50,23 +61,25 @@ function App() {
       </div>
       <div className="map-details">
         <Map height={400} center={[-26.204103, 28.047304]} defaultZoom={5}>
-          {panicAlerts?.map((alert) => {
+          {panicAlerts?.map((alert, index) => {
             return (
               <Marker
                 width={50}
+                key={index}
                 anchor={[alert.latitude, alert.longitude]}
-                onClick={() => setSelectedAlert(alert)}
+                onClick={() => handleAlertSelect(alert)}
               />
             );
           })}
-          {responders?.map((responder) => {
+          {responders?.map((responder, index) => {
             return (
               <Marker
                 color="orange"
+                key={`responder-${index}`}
                 width={50}
                 children={
                   <CarFrontIcon
-                    onClick={() => setSelectedResponder(responder)}
+                    onClick={() => handleResponderSelect(responder)}
                     className="car"
                     strokeWidth="3"
                   />

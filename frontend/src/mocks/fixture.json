@@ -58,6 +58,7 @@
       "serviceType": "Security"
     },
     {
+      "id": 1,
       "company": "Red Guard Security",
       "contact": 275674329988,
       "companyContact": 275674329988,
@@ -83,6 +84,7 @@
     "physicalAddress": "14 Avenue",
     "emergencyContact": 27988909902,
     "company": "Red Guard Security",
+    "responderId": 1,
     "responderContact": 275674329988,
     "responderEmail": "redGuard@gmail.com",
     "responderLatitude": -25.7566,

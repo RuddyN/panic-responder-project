@@ -23,7 +23,7 @@ export type PanicAlertDetails = {
   physicalAddress: string;
   emergencyContact: number;
   company?: string;
-  responderId: number;
+  responderId: number | null;
   responderContact?: number;
   responderEmail?: string;
   responderLatitude?: number;

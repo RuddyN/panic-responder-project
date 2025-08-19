@@ -1,32 +1,56 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
+  PANIC_ALERT_DETAILS_QUERY_KEY,
   usePanicAlertDetails,
   useUpdatePanicAlert,
 } from "../../hooks/panic-alerts";
 import "./styles.css";
 import { Edit2, Save } from "lucide-react";
 import type { PanicAlert, StatusTypes } from "../../api/panic-alerts/types";
+import { useQueryClient } from "@tanstack/react-query";
 
 export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
-  const { data: panicAlertDetails } = usePanicAlertDetails(panicAlert.id);
+  const { data: panicAlertDetails, refetch } = usePanicAlertDetails(
+    panicAlert.id
+  );
   const { mutate } = useUpdatePanicAlert();
-  const [status, setStatus] = useState(panicAlertDetails?.status);
+  const [status, setStatus] = useState<StatusTypes>();
   const [isEdit, setIsEdit] = useState(false);
-  const [responderId, setResponderId] = useState<number | null>(null);
+  const [responderId, setResponderId] = useState<number | null>();
+  const queryClient = useQueryClient();
+
+  useEffect(() => {
+    console.log("effect");
+    setIsEdit(false);
+
+    const initStatus = panicAlertDetails
+      ? panicAlertDetails.status
+      : panicAlert.status;
+    setStatus(initStatus);
+
+    const respId = panicAlertDetails?.responderId
+      ? panicAlertDetails.responderId
+      : panicAlert.responderId;
+    setResponderId(respId);
+  }, [panicAlert]);
 
   const onSaveAlert = () => {
+    setIsEdit(false);
+
     const reqBody = {
       ...panicAlert,
       status: status as StatusTypes,
       responderId: responderId ? responderId : null,
-      updatedAt: new Date()
+      updatedAt: new Date(),
     };
 
-    console.log({reqBody})
-
+    // TODO: handle error case
     mutate(reqBody, {
       onSuccess: () => {
-        console.log("all is well");
+        refetch();
+        queryClient.invalidateQueries({
+          queryKey: [PANIC_ALERT_DETAILS_QUERY_KEY],
+        });
       },
     });
   };
@@ -41,7 +65,7 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
           <button name="edit" onClick={() => setIsEdit(true)}>
             <Edit2 size={16} />
           </button>
-          <button name="save" onClick={onSaveAlert}>
+          <button name="save" onClick={onSaveAlert} disabled={!isEdit}>
             <Save size={16} />
           </button>
         </div>
@@ -59,7 +83,7 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
                   }
                 />
               ) : (
-                <p>{panicAlertDetails?.status}</p>
+                <p>{status}</p>
               )}
             </td>
           </tr>
@@ -98,13 +122,13 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
               {isEdit ? (
                 <input
                   type="number"
-                  value={parseInt(responderId)}
+                  value={responderId ? responderId : ""}
                   onChange={({ target }) =>
                     setResponderId(parseInt(target.value))
                   }
                 />
               ) : (
-                <p>{panicAlertDetails?.responderId}</p>
+                <p>{responderId}</p>
               )}
             </td>
           </tr>
@@ -113,6 +137,10 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
               <tr>
                 <td>Responder vehicle:</td>
                 <td>{panicAlertDetails?.vehicleInfo}</td>
+              </tr>
+              <tr>
+                <td>Responder contact:</td>
+                <td>{panicAlertDetails?.responderContact}</td>
               </tr>
               <tr>
                 <td>Responder location:</td>
