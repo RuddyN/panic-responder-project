@@ -27,7 +27,7 @@ p {
 
 .marker-details {
   height: 400px;
-  overflow: scroll;
+  overflow-y: auto;
   border-radius: 0.5rem;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }

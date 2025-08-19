@@ -2,12 +2,14 @@ import express from "express";
 import { PanicAlertService } from "./modules/panic-alert/panic-alert.service";
 import { UserService } from "./modules/users/user.service";
 import cors from "cors";
+import ResponderService from "./modules/responder/responder.service";
 
 export const app = express();
 const port = 3000;
 
 const panicAlertService = new PanicAlertService();
 const userService = new UserService();
+const responderService = new ResponderService()
 
 app.use(express.json());
 app.use(cors());
@@ -49,6 +51,11 @@ app.put("/panic-alerts", (req, res) => {
     status: 200,
     body: response,
   });
+});
+
+app.get(`/responders`, (req, res) => {
+  const response = responderService.fetchAllResponders()
+  res.json(response);
 });
 
 if (process.env["NODE_ENV"] !== "test") {

@@ -171,4 +171,10 @@ export const getResponderById = (id: number) => {
   return responder as ResponderModel;
 };
 
+export const getAllResponders = (): ResponderModel[] => {
+  const responder = db.prepare("SELECT * FROM responders").all();
+
+  return responder as ResponderModel[];
+};
+
 // db.close()
