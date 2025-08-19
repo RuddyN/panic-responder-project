@@ -6,6 +6,10 @@
     gap: 2rem;
   }
 
+  .error {
+    color: #fb2c36;
+  }
+
   .header {
     margin-bottom: 1rem;
     display: flex;

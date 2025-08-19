@@ -2,15 +2,30 @@ import type { PanicAlertDetails, PanicAlert } from "./types";
 
 const BASEURL = "http://localhost:3000";
 
+class ApiError extends Error {
+  status: number;
+  constructor({
+    message,
+    statusCode,
+  }: {
+    message: string;
+    statusCode: number;
+  }) {
+    super(message);
+    this.message = message;
+    this.status = statusCode;
+  }
+}
+
 export const getPanicAlerts = async () => {
   const response = await fetch(`${BASEURL}/panic-alerts`);
 
   if (!response.ok) {
     const body = await response.json();
-    throw await {
-      status: body?.status,
-      message: body?.msg,
-    };
+    throw new ApiError({
+      statusCode: response.status,
+      message: body?.error.message,
+    });
   }
 
   return response.json() as Promise<PanicAlert[]>;
@@ -27,10 +42,11 @@ export const updatePanicAlert = async (payload: PanicAlert) => {
 
   if (!response.ok) {
     const body = await response.json();
-    throw await {
-      status: body?.status,
-      message: body?.msg,
-    };
+
+    throw new ApiError({
+      statusCode: response.status,
+      message: body?.error.message,
+    });
   }
 
   return response.json() as Promise<PanicAlert>;
@@ -41,10 +57,10 @@ export const getPanicAlertDetails = async (id: number) => {
 
   if (!response.ok) {
     const body = await response.json();
-    throw await {
-      status: body?.status,
-      message: body?.msg,
-    };
+    throw new ApiError({
+      statusCode: response.status,
+      message: body?.error.message,
+    });
   }
 
   return response.json() as Promise<PanicAlertDetails>;

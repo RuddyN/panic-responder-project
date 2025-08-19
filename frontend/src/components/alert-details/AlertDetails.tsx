@@ -13,14 +13,14 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
   const { data: panicAlertDetails, refetch } = usePanicAlertDetails(
     panicAlert.id
   );
-  const { mutate } = useUpdatePanicAlert();
+  const { mutate, error, reset } = useUpdatePanicAlert();
   const [status, setStatus] = useState<StatusTypes>();
   const [isEdit, setIsEdit] = useState(false);
   const [responderId, setResponderId] = useState<number | null>();
+
   const queryClient = useQueryClient();
 
   useEffect(() => {
-    console.log("effect");
     setIsEdit(false);
 
     const initStatus = panicAlertDetails
@@ -36,6 +36,7 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
 
   const onSaveAlert = () => {
     setIsEdit(false);
+    reset();
 
     const reqBody = {
       ...panicAlert,
@@ -61,6 +62,7 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
     <div className="details-container">
       <div className="header">
         <h3 className="title">Alert details</h3>
+
         <div className="details-cta">
           <button name="edit" onClick={() => setIsEdit(true)}>
             <Edit2 size={16} />
@@ -70,6 +72,7 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
           </button>
         </div>
       </div>
+      {error ? <div className="error">{error.message}</div> : null}
       <table>
         <tbody>
           <tr>

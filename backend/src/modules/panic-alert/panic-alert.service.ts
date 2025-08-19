@@ -6,10 +6,21 @@ import {
   getPanicAlertById,
   getResponderById,
 } from "../../database/app";
+import EntityNotFoundError from "../../middleware/entity-no-found-error";
 import {
   PanicAlertDetailsModel,
   PanicAlertModel,
 } from "../../models/PanicAlertModel";
+
+class CustomError extends Error {
+  statusCode: number;
+
+  constructor(message: string, statusCode: number) {
+    super(message);
+    this.statusCode = statusCode;
+    this.name = "Error"; // Optional: set a specific name for the error
+  }
+}
 
 export class PanicAlertService {
   addPanicAlert = (panicAlert: PanicAlertModel) => {
@@ -28,14 +39,20 @@ export class PanicAlertService {
   };
 
   updatePanicAlert = (panicAlert: PanicAlertModel) => {
-    try {
-      const response = patchPanicAlert(panicAlert);
+    if (panicAlert.responderId) {
+      const responder = getResponderById(panicAlert.responderId);
 
-      return response;
-    } catch (error) {
-      // TODO: Handle errors, this should make more noise
-      console.error(`something went wrong while updating a panic ${error}`);
+      if (!responder) {
+        console.error(
+          `Responder with id ${panicAlert.responderId} does not exist`
+        );
+        throw new EntityNotFoundError("Responder not found", 404);
+      }
     }
+
+    const response = patchPanicAlert(panicAlert);
+
+    return response;
   };
 
   fetchPanicAlerts = () => {
@@ -48,54 +65,51 @@ export class PanicAlertService {
   };
 
   getPanicAlertDetails = (id: number) => {
-    try {
-      const alert = getPanicAlertById(id);
+    const alert = getPanicAlertById(id);
 
-      if (alert) {
-        const user = getUserById(alert.userId);
-
-        if (user && alert.id) {
-          let response: PanicAlertDetailsModel = {
-            id: alert.id,
-            alertLatitude: alert.latitude,
-            alertLongitude: alert.longitude,
-            alertLocation: alert.location,
-            status: alert.status,
-            alertCreatedAt: alert.createdAt,
-            alertUpdatedAt: alert.updatedAt,
-            fullName: user.fullName,
-            contact: user.contact,
-            email: user.email,
-            physicalAddress: user.physicalAddress,
-            emergencyContact: user.emergencyContact,
-          };
-
-          if (alert.responderId) {
-            const responder = getResponderById(alert.responderId);
-
-            response = {
-              ...response,
-              responderId: responder.id,
-              company: responder.company,
-              responderContact: responder.contact,
-              responderEmail: responder.email,
-              responderLatitude: responder.latitude,
-              responderLongitude: responder.longitude,
-              responderLocation: responder.location,
-              vehicleInfo: responder.vehicleInfo,
-            };
-          }
-
-          return response;
-        } else {
-          throw new Error(`User with id ${alert.userId} does not exist`);
-        }
-      } else {
-        throw new Error(`Alert with id ${id} does not exist`);
-      }
-    } catch (error) {
-      //TODO handle all errors
-      console.error(`Something went wrong ${error}`);
+    if (!alert) {
+      console.error(`Alert with id ${id} does not exist`);
+      throw new EntityNotFoundError("Alert not found", 404);
     }
+
+    const user = getUserById(alert.userId);
+
+    if (!user) {
+      console.error(`User with id ${alert.userId} does not exist`);
+      throw new EntityNotFoundError("User not found", 404);
+    }
+
+    let response: PanicAlertDetailsModel = {
+      id: id,
+      alertLatitude: alert.latitude,
+      alertLongitude: alert.longitude,
+      alertLocation: alert.location,
+      status: alert.status,
+      alertCreatedAt: alert.createdAt,
+      alertUpdatedAt: alert.updatedAt,
+      fullName: user.fullName,
+      contact: user.contact,
+      email: user.email,
+      physicalAddress: user.physicalAddress,
+      emergencyContact: user.emergencyContact,
+    };
+
+    if (alert.responderId) {
+      const responder = getResponderById(alert.responderId);
+
+      response = {
+        ...response,
+        responderId: responder.id,
+        company: responder.company,
+        responderContact: responder.contact,
+        responderEmail: responder.email,
+        responderLatitude: responder.latitude,
+        responderLongitude: responder.longitude,
+        responderLocation: responder.location,
+        vehicleInfo: responder.vehicleInfo,
+      };
+    }
+
+    return response;
   };
 }
