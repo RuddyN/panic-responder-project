@@ -75,6 +75,7 @@ export class PanicAlertService {
 
             response = {
               ...response,
+              responderId: responder.id,
               company: responder.company,
               responderContact: responder.contact,
               responderEmail: responder.email,

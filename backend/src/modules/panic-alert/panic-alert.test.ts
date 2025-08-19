@@ -106,6 +106,7 @@ describe("Panic alerts", () => {
       company: "Red Guard Security",
       responderContact: 275674329988,
       responderEmail: "redGuard@gmail.com",
+      responderId: 2,
       responderLatitude: -25.7566,
       responderLongitude: 28.1914,
       responderLocation: "Sandton",

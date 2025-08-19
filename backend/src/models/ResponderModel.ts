@@ -1,4 +1,5 @@
 export interface ResponderModel {
+  id?: number
   company: string;
   contact: number;
   companyContact: number;

@@ -31,6 +31,7 @@ export interface PanicAlertDetailsModel {
   physicalAddress: string;
   emergencyContact: number;
   company?: string;
+  responderId?: number;
   responderContact?: number;
   responderEmail?: string;
   responderLatitude?: number;
