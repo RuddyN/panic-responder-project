@@ -16,18 +16,7 @@ export interface PanicAlertModel {
   responderId?: number | null;
 }
 
-export interface ResponderModel {
-  company: string;
-  contact: number;
-  companyContact: number;
-  email: string;
-  latitude: number;
-  longitude: number;
-  location: string;
-  vehicleInfo: string;
-  serviceType: string;
-}
-
+// TODO: consider making this type. a group of other types
 export interface PanicAlertDetailsModel {
   id: number;
   alertLatitude: number;

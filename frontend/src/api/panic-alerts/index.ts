@@ -1,4 +1,4 @@
-import type { PanicAlertDetails, PanicAlert, PanicAlertRequest } from "./types";
+import type { PanicAlertDetails, PanicAlert } from "./types";
 
 const BASEURL = "http://localhost:3000";
 

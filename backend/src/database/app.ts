@@ -3,9 +3,9 @@ import { UserModel } from "../models/UserModel";
 import {
   PanicAlertModel,
   PanicStatus,
-  ResponderModel,
 } from "../models/PanicAlertModel";
 import fixtures from "./fixtures.json";
+import { ResponderModel } from "../models/ResponderModel";
 
 const db = new Database("app.db");
 

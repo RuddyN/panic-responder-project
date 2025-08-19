@@ -19,6 +19,10 @@ p {
   margin: 0;
 }
 
+.car {
+  pointer-events: auto;
+}
+
 .map-details {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));

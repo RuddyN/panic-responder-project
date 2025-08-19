@@ -4,12 +4,16 @@ import { usePanicAlerts } from "./hooks/panic-alerts";
 import type { PanicAlert } from "./api/panic-alerts/types";
 import { useState } from "react";
 import { AlertDetails } from "./components/alert-details/AlertDetails";
+import { useResponders } from "./hooks/responder";
+import type { Responder } from "./api/responders/types";
+import { CarFrontIcon } from "lucide-react";
 
 function App() {
   const { data: panicAlerts } = usePanicAlerts(); // only get new and assigned alerts
+  const { data: responders } = useResponders();
   //TODO create endpoint to get the stats
   const [selectedAlert, setSelectedAlert] = useState<PanicAlert>();
-  const [selectedResponder, setSelectedResponder] = useState<PanicAlert>();
+  const [selectedResponder, setSelectedResponder] = useState<Responder>();
 
   // TODO make different status marker different colors
 
@@ -49,10 +53,25 @@ function App() {
           {panicAlerts?.map((alert) => {
             return (
               <Marker
-                className="test-class"
                 width={50}
                 anchor={[alert.latitude, alert.longitude]}
                 onClick={() => setSelectedAlert(alert)}
+              />
+            );
+          })}
+          {responders?.map((responder) => {
+            return (
+              <Marker
+                color="orange"
+                width={50}
+                children={
+                  <CarFrontIcon
+                    onClick={() => setSelectedResponder(responder)}
+                    className="car"
+                    strokeWidth="3"
+                  />
+                }
+                anchor={[responder.latitude, responder.longitude]}
               />
             );
           })}
