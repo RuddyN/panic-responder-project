@@ -75,6 +75,7 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
       {error ? <div className="error">{error.message}</div> : null}
       <table>
         <tbody>
+          {/* TODO make this a drop down */}
           <tr>
             <td>Status</td>
             <td>
