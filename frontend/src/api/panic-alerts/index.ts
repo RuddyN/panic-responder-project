@@ -53,7 +53,7 @@ export const getPanicAlertDetails = async (id: number) => {
 };
 
 export const getPanicAlertStats = async () => {
-   const response = await fetch(`${BASEURL}/panic-alerts/stats`);
+   const response = await fetch(`${BASEURL}/panic-alerts-stats`);
 
   if (!response.ok) {
     const body = await response.json();
