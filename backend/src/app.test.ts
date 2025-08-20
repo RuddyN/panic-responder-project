@@ -5,13 +5,6 @@ import { getAllPanicAlerts } from "./database/app";
 import fixture from "./database/fixtures.json";
 
 jest.mock("./database/app.ts", () => ({
-  insertUser: jest.fn(() => {
-    status: 200;
-  }),
-  getUserById: jest.fn(() => ({
-    ...fixture.userData[0],
-    id: 1,
-  })),
   getPanicAlertById: jest.fn(() => ({ ...fixture.panicAlertData[0], id: 1 })),
   insertPanicAlert: jest.fn(() => {
     status: 200;
@@ -31,6 +24,8 @@ jest.mock("./database/app.ts", () => ({
       createdAt: "Aug 18 2025 13:40:22",
       updatedAt: "Aug 18 2025 13:40:22",
       userId: 235235,
+      userFullName: "Petter Pan",
+      userContact: 275674529996,
     },
   ]),
 }));

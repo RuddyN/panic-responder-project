@@ -6,7 +6,6 @@ export interface ResponderModel {
   email: string;
   latitude: number;
   longitude: number;
-  location: string;
   vehicleInfo: string;
   serviceType: string;
 }

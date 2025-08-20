@@ -1,6 +1,5 @@
 import express, { Request, Response } from "express";
 import { PanicAlertService } from "./modules/panic-alert/panic-alert.service";
-import { UserService } from "./modules/users/user.service";
 import cors from "cors";
 import ResponderService from "./modules/responder/responder.service";
 import errorHandler from "./middleware/error-handler";
@@ -9,16 +8,10 @@ export const app = express();
 const port = 3000;
 
 const panicAlertService = new PanicAlertService();
-const userService = new UserService();
 const responderService = new ResponderService();
 
 app.use(express.json());
 app.use(cors());
-
-app.get("/users", (req, res) => {
-  const users = userService.fetchUsers();
-  res.json({ users });
-});
 
 //TODO handle errors
 

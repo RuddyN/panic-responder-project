@@ -1,45 +1,24 @@
 {
-  "userData": [
-    {
-      "fullName": "John Doe",
-      "contact": 275674329988,
-      "email": "john@test.com",
-      "physicalAddress": "13 Avenue",
-      "emergencyContact": 275674329988
-    },
-    {
-      "fullName": "Peter Pan",
-      "contact": 275674329988,
-      "email": "peter@test.com",
-      "physicalAddress": "4 Smith",
-      "emergencyContact": 275674329988
-    },
-    {
-      "fullName": "Harry Potter",
-      "contact": 275674529988,
-      "email": "harry@test.com",
-      "physicalAddress": "14 Avenue",
-      "emergencyContact": 275674669988
-    }
-  ],
   "panicAlertData": [
     {
       "latitude": -25.7566,
       "longitude": 28.1914,
-      "location": "Pretoria",
       "status": "NEW",
       "createdAt": "Aug 17 2025 13:40:22",
       "updatedAt": "Aug 17 2025 13:40:22",
-      "userId": 1
+      "userId": 1,
+      "userFullName": "Harry Potter",
+      "userContact": 275674529988
     },
     {
       "latitude": -25.6682,
       "longitude": 27.2386,
-      "location": "Sandton",
       "status": "ASSIGNED",
       "createdAt": "Aug 11 2025 13:40:22",
       "updatedAt": "Aug 17 2025 13:40:22",
       "userId": 2,
+      "userFullName": "Petter Pan",
+      "userContact": 275674529996,
       "responderId": 1
     }
   ],
@@ -51,7 +30,6 @@
       "email": "ADT@gmail.com",
       "latitude": -29.1129,
       "longitude": 26.2149,
-      "location": "Bloemfontein",
       "vehicleInfo": "TY 78 FG GP",
       "serviceType": "Security"
     },
@@ -62,7 +40,6 @@
       "email": "redGuard@gmail.com",
       "latitude": -26.0917,
       "longitude": 27.96,
-      "location": "Randburg",
       "vehicleInfo": "ZZ 78 FG GP",
       "serviceType": "Security"
     }
