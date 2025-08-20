@@ -5,43 +5,59 @@ import {
   getAllPanicAlerts,
   getPanicAlertById,
   getResponderById,
+  getLatestAlertsByUserId,
 } from "../../database/app";
 import EntityNotFoundError from "../../middleware/entity-no-found-error";
 import {
   PanicAlertDetailsModel,
   PanicAlertModel,
 } from "../../models/PanicAlertModel";
+import { UserModel } from "../../models/UserModel";
 
-class CustomError extends Error {
-  statusCode: number;
+const isAlertValid = (newAlert: PanicAlertModel) => {
+  const alerts = getLatestAlertsByUserId(newAlert.userId);
 
-  constructor(message: string, statusCode: number) {
-    super(message);
-    this.statusCode = statusCode;
-    this.name = "Error"; // Optional: set a specific name for the error
+  const hourInMilliseconds = 60 * 60 * 1000;
+
+  if (alerts?.length > 0) {
+    const loggedAlert = alerts.find((alert) => {
+      const createdAtTime = new Date(alert.createdAt).getTime();
+      const newAlertTime = new Date(newAlert.createdAt).getTime();
+
+      const diffInMilliseconds = Math.abs(createdAtTime - newAlertTime);
+
+      return diffInMilliseconds <= hourInMilliseconds;
+    });
+
+    return !loggedAlert;
   }
-}
+
+  return true;
+};
 
 export class PanicAlertService {
   addPanicAlert = (panicAlert: PanicAlertModel) => {
     try {
-      const user = getUserById(panicAlert.userId);
-
-      if (user) {
-        insertPanicAlert(panicAlert);
-      } else {
-        throw new Error("User does not exist");
-      }
+      getUserById(panicAlert.userId);
     } catch (error) {
-      // TODO: Handle errors, this should make more noise
-      console.error(`something went wrong while adding a panic ${error}`);
+      console.error(`User with id ${panicAlert.userId} does not exist`);
+      throw new EntityNotFoundError("User not found", 404);
+    }
+
+    if (isAlertValid(panicAlert)) {
+      insertPanicAlert(panicAlert);
+    } else {
+      console.log("ERROR");
+      console.error(
+        `User with id ${panicAlert.userId} is attempting to log another alert with an hour of the previous one`
+      );
     }
   };
 
   updatePanicAlert = (panicAlert: PanicAlertModel) => {
     if (panicAlert.responderId) {
       try {
-        const responder = getResponderById(panicAlert.responderId);
+        getResponderById(panicAlert.responderId);
       } catch (error) {
         console.error(
           `Responder with id ${panicAlert.responderId} does not exist`
@@ -72,7 +88,7 @@ export class PanicAlertService {
       throw new EntityNotFoundError("Alert not found", 404);
     }
 
-    const user = getUserById(alert.userId);
+    const user: UserModel = getUserById(alert.userId);
 
     if (!user) {
       console.error(`User with id ${alert.userId} does not exist`);

@@ -21,6 +21,18 @@ jest.mock("./database/app.ts", () => ({
   }),
   getAllPanicAlerts: jest.fn(() => fixture.panicAlertData),
   getAllResponders: jest.fn(() => fixture.responderData),
+  getLatestAlertsByUserId: jest.fn(() => [
+    {
+      id: 1,
+      latitude: 26.09,
+      longitude: 33.59,
+      location: "Pretoria",
+      status: PanicStatus.NEW,
+      createdAt: "Aug 18 2025 13:40:22",
+      updatedAt: "Aug 18 2025 13:40:22",
+      userId: 235235,
+    },
+  ]),
 }));
 
 describe("App Controller", () => {

@@ -1,9 +1,6 @@
 import Database from "better-sqlite3";
 import { UserModel } from "../models/UserModel";
-import {
-  PanicAlertModel,
-  PanicStatus,
-} from "../models/PanicAlertModel";
+import { PanicAlertModel, PanicStatus } from "../models/PanicAlertModel";
 import fixtures from "./fixtures.json";
 import { ResponderModel } from "../models/ResponderModel";
 
@@ -175,6 +172,14 @@ export const getAllResponders = (): ResponderModel[] => {
   const responder = db.prepare("SELECT * FROM responders").all();
 
   return responder as ResponderModel[];
+};
+
+export const getLatestAlertsByUserId = (userId: number): PanicAlertModel[] => {
+  const alerts = db
+    .prepare("SELECT * from panicAlerts where userId = ?")
+    .all(userId);
+
+  return alerts as PanicAlertModel[];
 };
 
 // db.close()
