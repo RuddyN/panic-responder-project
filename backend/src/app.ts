@@ -52,6 +52,11 @@ app.get(`/responders`, (req, res) => {
   res.json(response);
 });
 
+app.get("/panic-alerts-stats", (req, res) => {
+  const response = panicAlertService.fetchPanicAlertsStats();
+  res.json(response);
+});
+
 app.use(errorHandler);
 
 if (process.env["NODE_ENV"] !== "test") {

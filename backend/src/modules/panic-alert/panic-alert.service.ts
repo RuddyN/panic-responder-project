@@ -1,15 +1,17 @@
 import {
   insertPanicAlert,
   patchPanicAlert,
-  getAllPanicAlerts,
+  getUnresolvedPanicAlerts,
   getPanicAlertById,
   getResponderById,
   getLatestAlertsByUserId,
+  getStats,
 } from "../../database/app";
 import EntityNotFoundError from "../../middleware/entity-no-found-error";
 import {
   PanicAlertDetailsModel,
   PanicAlertModel,
+  PanicAlertStats,
 } from "../../models/PanicAlertModel";
 
 const isAlertValid = (newAlert: PanicAlertModel) => {
@@ -21,7 +23,7 @@ const isAlertValid = (newAlert: PanicAlertModel) => {
     const loggedAlert = alerts.find((alert) => {
       const convertOldDate = new Date(alert.createdAt);
       const convertNewDate = new Date(newAlert.createdAt);
-      
+
       if (convertOldDate.getDate() === convertNewDate.getDate()) {
         const createdAtTime = convertOldDate.getTime();
         const newAlertTime = convertNewDate.getTime();
@@ -66,9 +68,9 @@ export class PanicAlertService {
     return response;
   };
 
-  fetchPanicAlerts = () => {
+  fetchPanicAlerts = (): PanicAlertModel[] => {
     try {
-      const alerts = getAllPanicAlerts();
+      const alerts = getUnresolvedPanicAlerts();
       return alerts;
     } catch (error) {
       console.error("Something went wrong while fetch alerts");
@@ -76,7 +78,7 @@ export class PanicAlertService {
     }
   };
 
-  getPanicAlertDetails = (id: number) => {
+  getPanicAlertDetails = (id: number): PanicAlertDetailsModel => {
     const alert = getPanicAlertById(id);
 
     if (!alert) {
@@ -98,6 +100,11 @@ export class PanicAlertService {
     if (alert.responderId) {
       const responder = getResponderById(alert.responderId);
 
+      if (!responder) {
+        console.error(`Responder with id ${id} does not exist`);
+        throw new EntityNotFoundError("Responder not found", 404);
+      }
+
       response = {
         ...response,
         responderId: responder.id,
@@ -109,6 +116,12 @@ export class PanicAlertService {
         vehicleInfo: responder.vehicleInfo,
       };
     }
+
+    return response;
+  };
+
+  fetchPanicAlertsStats = () => {
+    const response = getStats();
 
     return response;
   };

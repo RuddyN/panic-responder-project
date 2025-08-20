@@ -36,3 +36,10 @@ export interface PanicAlertDetailsModel {
   responderLocation?: string;
   vehicleInfo?: string;
 }
+
+export interface PanicAlertStats {
+  totalNewAlerts: number;
+  totalActiveAlerts: number;
+  closedTodayAlerts: number;
+  totalAlertsToday: number;
+}

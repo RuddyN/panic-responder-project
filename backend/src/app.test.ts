@@ -1,7 +1,7 @@
 import request from "supertest";
 import { app } from "./app";
 import { PanicStatus } from "./models/PanicAlertModel";
-import { getAllPanicAlerts } from "./database/app";
+import { getUnresolvedPanicAlerts } from "./database/app";
 import fixture from "./database/fixtures.json";
 
 jest.mock("./database/app.ts", () => ({
@@ -12,7 +12,7 @@ jest.mock("./database/app.ts", () => ({
   patchPanicAlert: jest.fn(() => {
     status: 200;
   }),
-  getAllPanicAlerts: jest.fn(() => fixture.panicAlertData),
+  getUnresolvedPanicAlerts: jest.fn(() => fixture.panicAlertData),
   getAllResponders: jest.fn(() => fixture.responderData),
   getLatestAlertsByUserId: jest.fn(() => [
     {
@@ -21,8 +21,8 @@ jest.mock("./database/app.ts", () => ({
       longitude: 33.59,
       location: "Pretoria",
       status: PanicStatus.NEW,
-      createdAt: "Aug 18 2025 13:40:22",
-      updatedAt: "Aug 18 2025 13:40:22",
+      createdAt: "2025-08-20 21:42:09",
+      updatedAt: "2025-08-20 21:42:09",
       userId: 235235,
       userFullName: "Petter Pan",
       userContact: 275674529996,
@@ -43,7 +43,7 @@ describe("App Controller", () => {
     const res = await request(app).get("/panic-alerts");
 
     expect(res.statusCode).toEqual(200);
-    expect(getAllPanicAlerts).toHaveBeenCalled();
+    expect(getUnresolvedPanicAlerts).toHaveBeenCalled();
   });
 
   test("Should retrieve all details of a single alert", async () => {
@@ -58,8 +58,8 @@ describe("App Controller", () => {
       longitude: 33.59,
       location: "Pretoria",
       status: PanicStatus.ASSIGNED,
-      createdAt: "Aug 17 2025 13:40:22",
-      updatedAt: "Aug 17 2025 13:40:46",
+      createdAt: "2025-08-20 21:42:09",
+      updatedAt: "2025-08-20 21:42:46",
       userId: 1,
     });
 

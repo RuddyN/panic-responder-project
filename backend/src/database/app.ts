@@ -112,8 +112,10 @@ export const getPanicAlertById = (id: number): PanicAlertModel => {
   return alert as PanicAlertModel;
 };
 
-export const getAllPanicAlerts = (): PanicAlertModel[] => {
-  const alerts = db.prepare("SELECT * FROM panicAlerts").all();
+export const getUnresolvedPanicAlerts = (): PanicAlertModel[] => {
+  const alerts = db
+    .prepare("SELECT * FROM panicAlerts WHERE status IN ('NEW', 'ASSIGNED')")
+    .all();
 
   return alerts as PanicAlertModel[];
 };
@@ -136,6 +138,40 @@ export const getLatestAlertsByUserId = (userId: number): PanicAlertModel[] => {
     .all(userId);
 
   return alerts as PanicAlertModel[];
+};
+
+type Count = {
+  count: number;
+};
+export const getStats = () => {
+  const totalNewAlerts = db
+    .prepare("SELECT COUNT(*) count FROM panicAlerts WHERE status = 'NEW'")
+    .get() as Count;
+
+  const totalActiveAlerts = db
+    .prepare("SELECT COUNT(*) count FROM panicAlerts WHERE status ='ASSIGNED'")
+    .get() as Count;
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const totalAlertsToday = db
+    .prepare(
+      "SELECT COUNT(*) count FROM panicAlerts WHERE strftime('%Y-%m-%d', createdAt) = ?"
+    )
+    .get(today) as Count;
+
+  const closedTodayAlerts = db
+    .prepare(
+      "SELECT COUNT(*) count FROM panicAlerts WHERE status = 'RESOLVED' AND strftime('%Y-%m-%d', updatedAt) = ?"
+    )
+    .get(today) as Count;
+
+  return {
+    totalNewAlerts: totalNewAlerts.count,
+    totalActiveAlerts: totalActiveAlerts.count,
+    closedTodayAlerts: closedTodayAlerts.count,
+    totalAlertsToday: totalAlertsToday.count,
+  };
 };
 
 // db.close()
