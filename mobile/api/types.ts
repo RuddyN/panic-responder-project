@@ -3,6 +3,8 @@ export type PanicAlert = {
   longitude: number;
   location: string;
   userId: number;
+  userFullName: string;
+  userContact: number;
   status: string;
   createdAt: string;
   updatedAt: string

@@ -21,6 +21,13 @@ export default function Index() {
   }, [location]);
 
   const getCurrentUserLocation = () => {
+    if (process.env.EXPO_PUBLIC_RUN_DEBUG === "true") {
+      // Midrand
+      setLocation({ latitude: -25.9819, longitude: 28.1329 });
+      setError(null);
+      return;
+    }
+
     Geolocation.getCurrentPosition(
       (position) => {
         const { latitude, longitude } = position.coords;
@@ -35,13 +42,16 @@ export default function Index() {
     );
   };
 
-  const createPanicAlert = () => {
+  const createPanicAlert = async () => {
     const today = new Date();
 
     const request: PanicAlert = {
       latitude: location.latitude,
       longitude: location.longitude,
+      // User details from partner (per their users)
       userId: 1,
+      userFullName: "Black Barbie",
+      userContact: 27734657799,
       location: "Randburg",
       createdAt: today.toString(),
       updatedAt: today.toString(),
@@ -49,11 +59,11 @@ export default function Index() {
     };
 
     try {
-      AddPanicAlert(request);
+      await AddPanicAlert(request);
 
       if (!error) {
         setDisableBtn(true);
-        setMessage("Alert has been dispatched, we will be in contact soon");
+        setMessage("Alert has been dispatched, Meet at location");
         setTimeout(() => {
           setDisableBtn(false);
         }, 60000);
