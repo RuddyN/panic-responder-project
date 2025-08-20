@@ -53,8 +53,7 @@ describe("App Controller", () => {
       status: PanicStatus.ASSIGNED,
       createdAt: "Aug 17 2025 13:40:22",
       updatedAt: "Aug 17 2025 13:40:46",
-      userId: 2,
-      responderId: 2,
+      userId: 1,
     });
 
     expect(res.statusCode).toEqual(200);

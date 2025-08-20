@@ -40,9 +40,9 @@ export class PanicAlertService {
 
   updatePanicAlert = (panicAlert: PanicAlertModel) => {
     if (panicAlert.responderId) {
-      const responder = getResponderById(panicAlert.responderId);
-
-      if (!responder) {
+      try {
+        const responder = getResponderById(panicAlert.responderId);
+      } catch (error) {
         console.error(
           `Responder with id ${panicAlert.responderId} does not exist`
         );
