@@ -57,17 +57,16 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
   };
 
   //TODO on demand reload
-  //TODO change status to a drop down
   return (
     <div className="details-container">
       <div className="header">
         <h3 className="title">Alert details</h3>
 
         <div className="details-cta">
-          <button name="edit" onClick={() => setIsEdit(true)}>
+          <button name="edit" aria-label="edit" onClick={() => setIsEdit(true)}>
             <Edit2 size={16} />
           </button>
-          <button name="save" onClick={onSaveAlert} disabled={!isEdit}>
+          <button name="save" aria-label="save" onClick={onSaveAlert} disabled={!isEdit}>
             <Save size={16} />
           </button>
         </div>
@@ -75,10 +74,9 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
       {error ? <div className="error">{error.message}</div> : null}
       <table>
         <tbody>
-          {/* TODO make this a drop down */}
           <tr>
             <td>Status:</td>
-            <td>
+            <td className="status-td">
               {isEdit ? (
                 <select
                   value={status}
@@ -86,6 +84,7 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
                     setStatus(target.value as StatusTypes)
                   }
                   className="status-select"
+                  name="status select"
                 >
                   <option
                     value="NEW"

@@ -63,5 +63,11 @@
     "responderLatitude": -25.7566,
     "responderLongitude": 28.1914,
     "vehicleInfo": "ZZ 78 FG GP"
+  },
+  "alertStats": {
+    "totalNewAlerts": 2,
+    "totalActiveAlerts": 3,
+    "closedTodayAlerts": 5,
+    "totalAlertsToday": 8
   }
 }

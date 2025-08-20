@@ -11,8 +11,9 @@ describe("Panic Alert App", () => {
     expect(screen.getByText("Panic Alert System")).toBeInTheDocument();
 
     await waitFor(() => {
-      expect(screen.getByTestId("total-alerts")).toHaveTextContent("2");
+      expect(screen.getByTestId("new-alerts")).toHaveTextContent("2");
     });
+    expect(screen.getByTestId("resolved-alerts")).toHaveTextContent("5");
   });
 
   it.todo("find a way to test the map being clicked");

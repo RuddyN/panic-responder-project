@@ -33,3 +33,10 @@ export type PanicAlertRequest = {
   status: StatusTypes;
   responderVehicleInfo: string;
 };
+
+export type PanicAlertStats = {
+  totalNewAlerts: number;
+  totalActiveAlerts: number;
+  closedTodayAlerts: number;
+  totalAlertsToday: number
+}

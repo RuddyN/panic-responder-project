@@ -1,5 +1,5 @@
 import { ApiError } from "../api-error";
-import type { PanicAlertDetails, PanicAlert } from "./types";
+import type { PanicAlertDetails, PanicAlert, PanicAlertStats } from "./types";
 
 const BASEURL = "http://localhost:3000";
 
@@ -51,3 +51,17 @@ export const getPanicAlertDetails = async (id: number) => {
 
   return response.json() as Promise<PanicAlertDetails>;
 };
+
+export const getPanicAlertStats = async () => {
+   const response = await fetch(`${BASEURL}/panic-alerts/stats`);
+
+  if (!response.ok) {
+    const body = await response.json();
+    throw new ApiError({
+      statusCode: response.status,
+      message: body?.error.message,
+    });
+  }
+
+  return response.json() as Promise<PanicAlertStats>;
+}

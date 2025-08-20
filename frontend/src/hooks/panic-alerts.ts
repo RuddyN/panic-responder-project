@@ -1,8 +1,13 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import type { PanicAlertDetails, PanicAlert } from "../api/panic-alerts/types";
+import type {
+  PanicAlertDetails,
+  PanicAlert,
+  PanicAlertStats,
+} from "../api/panic-alerts/types";
 import {
   getPanicAlertDetails,
   getPanicAlerts,
+  getPanicAlertStats,
   updatePanicAlert,
 } from "../api/panic-alerts";
 
@@ -22,6 +27,13 @@ export function usePanicAlertDetails(id: number) {
     queryFn: () => getPanicAlertDetails(id),
     enabled: !!id,
     staleTime: 0,
+  });
+}
+
+export function usePanicAlertStats() {
+  return useQuery<PanicAlertStats, Error>({
+    queryKey: [],
+    queryFn: getPanicAlertStats,
   });
 }
 

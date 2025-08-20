@@ -1,6 +1,6 @@
 import "./App.css";
 import { Map, Marker } from "pigeon-maps";
-import { usePanicAlerts } from "./hooks/panic-alerts";
+import { usePanicAlerts, usePanicAlertStats } from "./hooks/panic-alerts";
 import type { PanicAlert } from "./api/panic-alerts/types";
 import { useState } from "react";
 import { AlertDetails } from "./components/alert-details/AlertDetails";
@@ -10,13 +10,14 @@ import { CarFrontIcon } from "lucide-react";
 import { ResponderDetails } from "./components/responder-details/ResponderDetails";
 
 function App() {
-  const { data: panicAlerts } = usePanicAlerts(); // only get new and assigned alerts
+  const { data: panicAlerts } = usePanicAlerts(); // TODO only get new and assigned alerts
   const { data: responders } = useResponders();
-  //TODO create endpoint to get the stats
+  const { data: stats } = usePanicAlertStats();
+
+  console.log({stats})
+
   const [selectedAlert, setSelectedAlert] = useState<PanicAlert>();
   const [selectedResponder, setSelectedResponder] = useState<Responder>();
-
-  // TODO make different status marker different colors
 
   const getDetails = () => {
     if (selectedAlert) {
@@ -44,19 +45,19 @@ function App() {
       <div className="stats">
         <div className="stats-block">
           <h4>🚨 New</h4>
-          <p>1</p>
+          <p data-testid="new-alerts">{stats?.totalNewAlerts}</p>
         </div>
         <div className="stats-block">
           <h3>🪖 Active </h3>
-          <p>3</p>
+          <p>{stats?.totalActiveAlerts}</p>
         </div>
         <div className="stats-block">
           <h3>✅ Resolved today</h3>
-          <p data-testid="total-alerts">{panicAlerts?.length}</p>
+          <p data-testid="resolved-alerts">{stats?.closedTodayAlerts}</p>
         </div>
         <div className="stats-block">
           <h3>🎯 Total today</h3>
-          <p>5</p>
+          <p>{stats?.totalAlertsToday}</p>
         </div>
       </div>
       <div className="map-details">
