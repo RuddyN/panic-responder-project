@@ -80,12 +80,24 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
             <td>Status:</td>
             <td>
               {isEdit ? (
-                <input
+                <select
                   value={status}
                   onChange={({ target }) =>
                     setStatus(target.value as StatusTypes)
                   }
-                />
+                  className="status-select"
+                >
+                  <option
+                    value="NEW"
+                    disabled={status === "ASSIGNED" || status === "RESOLVED"}
+                  >
+                    NEW
+                  </option>
+                  <option value="ASSIGNED" disabled={status === "RESOLVED"}>
+                    ASSIGNED
+                  </option>
+                  <option value="RESOLVED">RESOLVED</option>
+                </select>
               ) : (
                 <p>{status}</p>
               )}
@@ -123,10 +135,12 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
               {isEdit ? (
                 <input
                   type="number"
+                  name="responder id"
                   value={responderId ? responderId : ""}
                   onChange={({ target }) =>
                     setResponderId(parseInt(target.value))
                   }
+                  className="responder-input"
                 />
               ) : (
                 <p>{responderId}</p>

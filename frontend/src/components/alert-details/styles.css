@@ -10,6 +10,17 @@
     color: #fb2c36;
   }
 
+  .status-select {
+    padding: 4px;
+    width: 100%;
+    border-color: lightgray;
+    border-radius: 0.3rem;
+  }
+
+  .responder-input {
+    width: 100%;
+  }
+
   .header {
     margin-bottom: 1rem;
     display: flex;

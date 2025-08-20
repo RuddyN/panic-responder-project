@@ -39,24 +39,24 @@ function App() {
   };
 
   return (
-    <section>
-      <h1 className="title">Panic Alert System</h1>
+    <section className="app-container">
+      <h1 className="header-title">Panic Alert System</h1>
       <div className="stats">
         <div className="stats-block">
-          <h4>New </h4>
+          <h4>🚨 New</h4>
           <p>1</p>
         </div>
         <div className="stats-block">
-          <h3>Active </h3>
+          <h3>🪖 Active </h3>
           <p>3</p>
         </div>
         <div className="stats-block">
-          <h3>Resolved today</h3>
+          <h3>✅ Resolved today</h3>
           <p data-testid="total-alerts">{panicAlerts?.length}</p>
         </div>
         <div className="stats-block">
-          <h3>Total alerts today</h3>
-          <p>Red Guard Security</p>
+          <h3>🎯 Total today</h3>
+          <p>5</p>
         </div>
       </div>
       <div className="map-details">
@@ -68,6 +68,7 @@ function App() {
                 key={index}
                 anchor={[alert.latitude, alert.longitude]}
                 onClick={() => handleAlertSelect(alert)}
+                color={alert.status === "ASSIGNED" ? "orange" : "red"}
               />
             );
           })}
@@ -93,7 +94,7 @@ function App() {
           {selectedAlert || selectedResponder ? (
             getDetails()
           ) : (
-            <div className="empty-details">Select marker</div>
+            <div className="empty-details">Select a marker</div>
           )}
         </div>
       </div>
