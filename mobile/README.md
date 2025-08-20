@@ -15,6 +15,10 @@
    npx expo start
    ```
 
+3. If you want to run on IOS you might need to do this first
+    ```bash
+    npx pod-install
+    ```
 In the output, you'll find options to open the app in a
 
 - [development build](https://docs.expo.dev/develop/development-builds/introduction/)

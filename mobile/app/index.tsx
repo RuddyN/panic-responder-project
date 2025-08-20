@@ -50,6 +50,14 @@ export default function Index() {
 
     try {
       AddPanicAlert(request);
+
+      if (!error) {
+        setDisableBtn(true);
+        setMessage("Alert has been dispatched, we will be in contact soon");
+        setTimeout(() => {
+          setDisableBtn(false);
+        }, 60000);
+      }
     } catch (error) {
       const message = getErrorMessage(error);
       setError(message);
@@ -58,12 +66,6 @@ export default function Index() {
 
   const handlePanicClick = () => {
     getCurrentUserLocation();
-    setDisableBtn(true);
-    setMessage("Alert has been dispatched, we will be in contact soon");
-
-    setTimeout(() => {
-      setDisableBtn(false);
-    }, 60000);
   };
 
   return (
@@ -84,8 +86,8 @@ export default function Index() {
           color="#fb2c36"
         />
       </View>
-      {message ? <Text>{message}</Text> : null}
-      {error ? <Text>{error}</Text> : null}
+      {message ? <Text style={styles.message}>{message}</Text> : null}
+      {error ? <Text style={styles.error}>{error}</Text> : null}
     </View>
   );
 }
@@ -93,6 +95,13 @@ export default function Index() {
 const styles = StyleSheet.create({
   btn: {
     borderRadius: "99px",
+  },
+  message: {
+    marginTop: 12,
+  },
+  error: {
+    marginTop: 12,
+    color: "#fb2c36",
   },
 
   heading: {
