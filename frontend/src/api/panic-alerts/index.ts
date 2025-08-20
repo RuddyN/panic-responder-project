@@ -1,21 +1,7 @@
+import { ApiError } from "../api-error";
 import type { PanicAlertDetails, PanicAlert } from "./types";
 
 const BASEURL = "http://localhost:3000";
-
-class ApiError extends Error {
-  status: number;
-  constructor({
-    message,
-    statusCode,
-  }: {
-    message: string;
-    statusCode: number;
-  }) {
-    super(message);
-    this.message = message;
-    this.status = statusCode;
-  }
-}
 
 export const getPanicAlerts = async () => {
   const response = await fetch(`${BASEURL}/panic-alerts`);

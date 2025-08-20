@@ -21,10 +21,6 @@ export function ResponderDetails({ responder }: { responder: Responder }) {
             <td>{responder?.contact}</td>
           </tr>
           <tr>
-            <td>Responder location:</td>
-            <td>{responder?.location}</td>
-          </tr>
-          <tr>
             <td>Responder coordinates:</td>
             <td>
               {responder?.latitude} {responder?.longitude}

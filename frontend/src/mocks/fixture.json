@@ -1,34 +1,12 @@
 {
-  "userData": [
-    {
-      "fullName": "John Doe",
-      "contact": 275674329988,
-      "email": "john@test.com",
-      "physicalAddress": "13 Avenue",
-      "emergencyContact": 275674329988
-    },
-    {
-      "fullName": "Peter Pan",
-      "contact": 275674329988,
-      "email": "peter@test.com",
-      "physicalAddress": "4 Smith",
-      "emergencyContact": 275674329988
-    },
-    {
-      "fullName": "Harry Potter",
-      "contact": 275674529988,
-      "email": "harry@test.com",
-      "physicalAddress": "14 Avenue",
-      "emergencyContact": 275674669988
-    }
-  ],
   "panicAlertData": [
     {
       "id": 1,
       "latitude": -25.7566,
       "longitude": 28.1914,
-      "location": "Pretoria",
       "status": "NEW",
+      "userFullName": "Amanda Pan",
+      "userContact": 275674529996,
       "createdAt": "Aug 17 2025 13:40:22",
       "updatedAt": "Aug 17 2025 13:40:22",
       "userId": 1
@@ -37,11 +15,12 @@
       "id": 2,
       "latitude": -25.6682,
       "longitude": 27.2386,
-      "location": "Sandton",
       "status": "ASSIGNED",
       "createdAt": "Aug 11 2025 13:40:22",
       "updatedAt": "Aug 17 2025 13:40:22",
       "userId": 2,
+      "userFullName": "Petter Pan",
+      "userContact": 275674529996,
       "responderId": 1
     }
   ],
@@ -53,7 +32,6 @@
       "email": "ADT@gmail.com",
       "latitude": -25.7566,
       "longitude": 28.1914,
-      "location": "Pretoria",
       "vehicleInfo": "TY 78 FG GP",
       "serviceType": "Security"
     },
@@ -65,7 +43,6 @@
       "email": "redGuard@gmail.com",
       "latitude": -25.7566,
       "longitude": 28.1914,
-      "location": "Sandton",
       "vehicleInfo": "ZZ 78 FG GP",
       "serviceType": "Security"
     }
@@ -74,22 +51,17 @@
     "id": 1,
     "alertLatitude": 26.09,
     "alertLongitude": 33.59,
-    "alertLocation": "Pretoria",
     "status": "ASSIGNED",
     "alertCreatedAt": "Aug 17 2025 13:40:22",
-    "alertUpdatedAt": "Aug 17 2025 13:40:22",
-    "fullName": "John Doe",
-    "contact": 27988909900,
-    "email": "john@gmail.com",
-    "physicalAddress": "14 Avenue",
-    "emergencyContact": 27988909902,
+    "alertUpdatedAt": "Aug 18 2025 13:40:22",
+    "userFullName": "John Doe",
+    "userContact": 27988909900,
     "company": "Red Guard Security",
     "responderId": 1,
     "responderContact": 275674329988,
     "responderEmail": "redGuard@gmail.com",
     "responderLatitude": -25.7566,
     "responderLongitude": 28.1914,
-    "responderLocation": "Sandton",
     "vehicleInfo": "ZZ 78 FG GP"
   }
 }

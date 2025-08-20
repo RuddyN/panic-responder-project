@@ -1,3 +1,4 @@
+import { ApiError } from "../api-error";
 import type { Responder } from "./types";
 
 const BASEURL = "http://localhost:3000";
@@ -7,10 +8,10 @@ export const getResponders = async () => {
 
   if (!response.ok) {
     const body = await response.json();
-    throw await {
-      status: body?.status,
-      message: body?.msg,
-    };
+    throw new ApiError({
+      statusCode: response.status,
+      message: body?.error.message,
+    });
   }
 
   return response.json() as Promise<Responder[]>;

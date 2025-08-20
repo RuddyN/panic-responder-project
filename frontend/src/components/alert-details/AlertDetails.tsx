@@ -32,7 +32,7 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
       ? panicAlertDetails.responderId
       : panicAlert.responderId;
     setResponderId(respId);
-  }, [panicAlert]);
+  }, [panicAlert, panicAlertDetails]);
 
   const onSaveAlert = () => {
     setIsEdit(false);
@@ -77,7 +77,7 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
         <tbody>
           {/* TODO make this a drop down */}
           <tr>
-            <td>Status</td>
+            <td>Status:</td>
             <td>
               {isEdit ? (
                 <input
@@ -92,17 +92,14 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
             </td>
           </tr>
           <tr>
-            <td>User name</td>
-            <td>{panicAlertDetails?.fullName}</td>
+            <td>Name:</td>
+            <td>{panicAlertDetails?.userFullName}</td>
           </tr>
           <tr>
-            <td>Contact</td>
-            <td>{panicAlertDetails?.contact}</td>
+            <td>Contact:</td>
+            <td>{panicAlertDetails?.userContact}</td>
           </tr>
-          <tr>
-            <td>Alert location:</td>
-            <td>{panicAlertDetails?.alertLocation}</td>
-          </tr>
+
           <tr>
             <td>Alert coordinates:</td>
             <td>
@@ -136,7 +133,7 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
               )}
             </td>
           </tr>
-          {panicAlertDetails?.responderLocation ? (
+          {panicAlertDetails?.responderId ? (
             <>
               <tr>
                 <td>Responder vehicle:</td>
@@ -145,10 +142,6 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
               <tr>
                 <td>Responder contact:</td>
                 <td>{panicAlertDetails?.responderContact}</td>
-              </tr>
-              <tr>
-                <td>Responder location:</td>
-                <td>{panicAlertDetails?.responderLocation}</td>
               </tr>
               <tr>
                 <td>Responder coordinates:</td>

@@ -1,24 +1,13 @@
-import { render, screen, waitFor } from "@testing-library/react";
+import { screen, waitFor } from "@testing-library/react";
 
 import { describe, it, expect } from "vitest";
 import App from "./App";
-import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-
-const testQueryClient = new QueryClient({
-  defaultOptions: {
-    queries: {
-      retry: false,
-    },
-  },
-});
+import renderInWrapper from "./mocks/utils";
 
 describe("Panic Alert App", () => {
   it("renders a page with stats", async () => {
-    render(
-      <QueryClientProvider client={testQueryClient}>
-        <App />
-      </QueryClientProvider>
-    );
+    renderInWrapper(<App />);
+
     expect(screen.getByText("Panic Alert System")).toBeInTheDocument();
 
     await waitFor(() => {
@@ -26,5 +15,5 @@ describe("Panic Alert App", () => {
     });
   });
 
-  it.todo('find a way to test the map being clicked')
+  it.todo("find a way to test the map being clicked");
 });
