@@ -1,17 +1,13 @@
 import request from "supertest";
 import { app } from "./app";
-import { PanicStatus } from "./models/PanicAlertModel";
-import { getUnresolvedPanicAlerts } from "./database/app";
+import { PanicAlertModel, PanicStatus } from "./models/PanicAlertModel";
+import { getPanicAlertById, getUnresolvedPanicAlerts } from "./database/app";
 import fixture from "./database/fixtures.json";
 
 jest.mock("./database/app.ts", () => ({
-  getPanicAlertById: jest.fn(() => ({ ...fixture.panicAlertData[0], id: 1 })),
-  insertPanicAlert: jest.fn(() => {
-    status: 200;
-  }),
-  patchPanicAlert: jest.fn(() => {
-    status: 200;
-  }),
+  getPanicAlertById: jest.fn(() => ({ ...fixture.panicAlertData[0], id: 9 })),
+  insertPanicAlert: jest.fn(),
+  patchPanicAlert: jest.fn(),
   getUnresolvedPanicAlerts: jest.fn(() => fixture.panicAlertData),
   getAllResponders: jest.fn(() => fixture.responderData),
   getLatestAlertsByUserId: jest.fn(() => [
@@ -30,7 +26,10 @@ jest.mock("./database/app.ts", () => ({
   ]),
 }));
 
+const mockFoo = jest.mocked(getPanicAlertById)
+
 describe("App Controller", () => {
+
   test("Should add a panic alert", async () => {
     const res = await request(app)
       .post("/panic-alerts")
@@ -38,8 +37,7 @@ describe("App Controller", () => {
     expect(res.statusCode).toEqual(200);
   });
 
-  //TODO: Maybe this should be a paged response / endpoint
-  test("should retrieve all panic alerts", async () => {
+  test("should retrieve NEW and ASSIGNED panic alerts", async () => {
     const res = await request(app).get("/panic-alerts");
 
     expect(res.statusCode).toEqual(200);
@@ -69,5 +67,11 @@ describe("App Controller", () => {
   test("should get all available responders", async () => {
     const res = await request(app).get("/responders");
     expect(res.statusCode).toEqual(200);
+  });
+
+  test("Should return 404 if alert does not exist", async() => {
+    mockFoo.mockReturnValue(undefined as unknown as PanicAlertModel)
+    const res = await request(app).get("/panic-alerts/100");
+    expect(res.statusCode).toEqual(404);
   });
 });

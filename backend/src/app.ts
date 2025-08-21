@@ -13,19 +13,11 @@ const responderService = new ResponderService();
 app.use(express.json());
 app.use(cors());
 
-//TODO handle errors
-
 app.post("/panic-alerts", (req, res) => {
-  try {
-    panicAlertService.addPanicAlert(req.body);
-    res.send({
-      status: 200,
-    });
-  } catch (error) {
-    console.error(
-      `something went wrong while calling the alert service ${error}`
-    );
-  }
+  panicAlertService.addPanicAlert(req.body);
+  res.send({
+    status: 200,
+  });
 });
 
 app.get("/panic-alerts", (req, res) => {

@@ -1,5 +1,5 @@
 import Database from "better-sqlite3";
-import { PanicAlertModel, PanicStatus } from "../models/PanicAlertModel";
+import { PanicAlertModel, PanicAlertStats } from "../models/PanicAlertModel";
 import fixtures from "./fixtures.json";
 import { ResponderModel } from "../models/ResponderModel";
 
@@ -61,9 +61,8 @@ export const insertPanicAlert = (alert: PanicAlertModel) => {
   );
 };
 
-// TODO add a type for this
-fixtures.panicAlertData.forEach((data) => {
-  insertPanicAlert({ ...data, status: data.status as unknown as PanicStatus });
+fixtures.panicAlertData.forEach((data: PanicAlertModel) => {
+  insertPanicAlert(data);
 });
 
 export const insertResponderAlert = (responder: ResponderModel) => {
@@ -83,7 +82,7 @@ export const insertResponderAlert = (responder: ResponderModel) => {
   );
 };
 
-fixtures.responderData.forEach((data) => {
+fixtures.responderData.forEach((data: ResponderModel) => {
   insertResponderAlert(data);
 });
 
@@ -120,7 +119,7 @@ export const getUnresolvedPanicAlerts = (): PanicAlertModel[] => {
   return alerts as PanicAlertModel[];
 };
 
-export const getResponderById = (id: number) => {
+export const getResponderById = (id: number): ResponderModel => {
   const responder = db.prepare("SELECT * FROM responders WHERE id=?").get(id);
 
   return responder as ResponderModel;
@@ -143,7 +142,7 @@ export const getLatestAlertsByUserId = (userId: number): PanicAlertModel[] => {
 type Count = {
   count: number;
 };
-export const getStats = () => {
+export const getStats = (): PanicAlertStats => {
   const totalNewAlerts = db
     .prepare("SELECT COUNT(*) count FROM panicAlerts WHERE status = 'NEW'")
     .get() as Count;

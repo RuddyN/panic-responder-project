@@ -1,9 +1,12 @@
-import { insertPanicAlert, patchPanicAlert } from "../../database/app";
+import {
+  getLatestAlertsByUserId,
+  getPanicAlertById,
+  insertPanicAlert,
+  patchPanicAlert,
+} from "../../database/app";
 import { PanicAlertModel, PanicStatus } from "../../models/PanicAlertModel";
 import { PanicAlertService } from "./panic-alert.service";
 import fixture from "./../../database/fixtures.json";
-
-const today = new Date();
 
 jest.mock("./../../database/app.ts", () => ({
   getPanicAlertById: jest.fn(() => ({
@@ -14,12 +17,8 @@ jest.mock("./../../database/app.ts", () => ({
     id: 2,
     ...fixture.responderData[1],
   })),
-  insertPanicAlert: jest.fn(() => {
-    status: 200;
-  }),
-  patchPanicAlert: jest.fn(() => {
-    status: 200;
-  }),
+  insertPanicAlert: jest.fn(),
+  patchPanicAlert: jest.fn(),
   getLatestAlertsByUserId: jest.fn(() => [
     {
       id: 1,
@@ -32,25 +31,17 @@ jest.mock("./../../database/app.ts", () => ({
       userFullName: "Petter Pan",
       userContact: 275674529996,
     },
-    {
-      id: 2,
-      latitude: 26.09,
-      longitude: 33.59,
-      status: PanicStatus.NEW,
-      createdAt: today.toString(),
-      updatedAt: "2025-08-20 21:42:09",
-      userId: 235235,
-      userFullName: "Harry Potter",
-      userContact: 275674529996,
-    },
   ]),
 }));
+
+const today = new Date();
+const mockGetAlertByUser = jest.mocked(getLatestAlertsByUserId);
 
 describe("Panic alerts", () => {
   const alert: PanicAlertModel = {
     latitude: 26.09,
     longitude: 33.59,
-    status: PanicStatus.NEW,
+    status: PanicStatus.NEW.toString(),
     createdAt: "2025-08-18 21:42:09",
     updatedAt: "2025-08-18 21:42:09",
     userId: 235235,
@@ -59,10 +50,9 @@ describe("Panic alerts", () => {
     responderId: null,
   };
 
-  // afterEach(() => {
-  //   jest.resetAllMocks()
-  //   jest.clearAllMocks()
-  // })
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
   test("should add a panic alert", () => {
     const panicAlertService = new PanicAlertService();
@@ -72,17 +62,32 @@ describe("Panic alerts", () => {
     expect(insertPanicAlert).toHaveBeenCalled();
   });
 
-  test.skip("should NOT add an alert with one hour of an existing alert", () => {
+  test("should NOT add an alert within one hour of an existing alert of the same user", () => {
+    mockGetAlertByUser.mockReturnValue([
+      {
+        id: 6,
+        latitude: 26.09,
+        longitude: 33.59,
+        status: PanicStatus.NEW.toString(),
+        createdAt: today.toString(),
+        updatedAt: "2025-08-20 21:42:09",
+        userId: 3443,
+        userFullName: "Harry Potter",
+        userContact: 275674529996,
+      },
+    ]);
+
     const panicAlertService = new PanicAlertService();
     const currentDate = new Date();
     currentDate.setMinutes(currentDate.getMinutes() + 5);
 
     const updatedAlert = {
+      id: 6,
       latitude: 26.09,
       longitude: 33.59,
-      status: PanicStatus.NEW,
+      status: "NEW",
       updatedAt: "2025-08-18 21:42:09",
-      userId: 235235,
+      userId: 3443,
       userFullName: "Petter Pan",
       userContact: 275674529996,
       responderId: null,
@@ -133,7 +138,4 @@ describe("Panic alerts", () => {
       vehicleInfo: "ZZ 78 FG GP",
     });
   });
-
-  test.todo("handle errors");
-  test.todo("add tests for get all users and all alerts");
 });

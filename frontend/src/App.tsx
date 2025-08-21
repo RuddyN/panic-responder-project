@@ -10,7 +10,7 @@ import { CarFrontIcon } from "lucide-react";
 import { ResponderDetails } from "./components/responder-details/ResponderDetails";
 
 function App() {
-  const { data: panicAlerts } = usePanicAlerts(); // TODO only get new and assigned alerts
+  const { data: panicAlerts } = usePanicAlerts();
   const { data: responders } = useResponders();
   const { data: stats } = usePanicAlertStats();
 

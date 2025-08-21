@@ -12,6 +12,7 @@ import {
   PanicAlertDetailsModel,
   PanicAlertModel,
   PanicAlertStats,
+  PanicStatus,
 } from "../../models/PanicAlertModel";
 
 const isAlertValid = (newAlert: PanicAlertModel) => {
@@ -90,7 +91,7 @@ export class PanicAlertService {
       id: id,
       alertLatitude: alert.latitude,
       alertLongitude: alert.longitude,
-      status: alert.status,
+      status: alert.status as unknown as PanicStatus,
       alertCreatedAt: alert.createdAt,
       alertUpdatedAt: alert.updatedAt,
       userFullName: alert.userFullName,
@@ -120,7 +121,7 @@ export class PanicAlertService {
     return response;
   };
 
-  fetchPanicAlertsStats = () => {
+  fetchPanicAlertsStats = (): PanicAlertStats => {
     const response = getStats();
 
     return response;

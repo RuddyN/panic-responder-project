@@ -8,7 +8,7 @@ export interface PanicAlertModel {
   id?: number;
   latitude: number;
   longitude: number;
-  status: PanicStatus;
+  status: string;
   createdAt: string;
   updatedAt: string;
   userId: number;
@@ -17,7 +17,6 @@ export interface PanicAlertModel {
   responderId?: number | null;
 }
 
-// TODO: consider making this type. a group of other types
 export interface PanicAlertDetailsModel {
   id: number;
   alertLatitude: number;
@@ -33,7 +32,6 @@ export interface PanicAlertDetailsModel {
   responderEmail?: string;
   responderLatitude?: number;
   responderLongitude?: number;
-  responderLocation?: string;
   vehicleInfo?: string;
 }
 
