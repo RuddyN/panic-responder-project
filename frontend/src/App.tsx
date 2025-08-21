@@ -14,8 +14,6 @@ function App() {
   const { data: responders } = useResponders();
   const { data: stats } = usePanicAlertStats();
 
-  console.log({stats})
-
   const [selectedAlert, setSelectedAlert] = useState<PanicAlert>();
   const [selectedResponder, setSelectedResponder] = useState<Responder>();
 

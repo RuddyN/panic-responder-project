@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { PanicAlert } from "@/api/types";
 import { AddPanicAlert } from "@/api";
 import { getErrorMessage, throttleFunc } from "./utils";
+import { format } from "date-fns";
 
 export default function Index() {
   const [location, setLocation] = useState({
@@ -43,7 +44,7 @@ export default function Index() {
   };
 
   const createPanicAlert = async () => {
-    const today = new Date();
+    const today = format(new Date(), "yyyy-MM-dd HH:mm:ss");
 
     const request: PanicAlert = {
       latitude: location.latitude,
@@ -53,8 +54,8 @@ export default function Index() {
       userFullName: "Black Barbie",
       userContact: 27734657799,
       location: "Randburg",
-      createdAt: today.toString(),
-      updatedAt: today.toString(),
+      createdAt: today,
+      updatedAt: today,
       status: "NEW",
     };
 
