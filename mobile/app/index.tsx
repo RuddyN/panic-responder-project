@@ -1,4 +1,4 @@
-import { Button, Text, View, StyleSheet } from "react-native";
+import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Geolocation from "@react-native-community/geolocation";
 import { useEffect, useState } from "react";
 import { PanicAlert } from "@/api/types";
@@ -15,13 +15,16 @@ export default function Index() {
   const [disableBtn, setDisableBtn] = useState(false);
   const [message, setMessage] = useState("");
 
+  const delay = 30 * 60 * 1000;
+
   useEffect(() => {
     if (location.latitude !== 0 && location.longitude !== 0) {
-      throttleFunc(createPanicAlert, 60000);
+      throttleFunc(createPanicAlert, delay);
     }
   }, [location]);
 
   const getCurrentUserLocation = () => {
+    // DEMO: For when the location is not working as expected
     if (process.env.EXPO_PUBLIC_RUN_DEBUG === "true") {
       // Midrand
       setLocation({ latitude: -25.9819, longitude: 28.1329 });
@@ -49,14 +52,13 @@ export default function Index() {
     const request: PanicAlert = {
       latitude: location.latitude,
       longitude: location.longitude,
-      // User details from partner (per their users)
-      userId: 1,
-      userFullName: "Black Barbie",
-      userContact: 27734657799,
-      location: "Randburg",
       createdAt: today,
       updatedAt: today,
       status: "NEW",
+      // User details from partner (per their users)
+      userId: 10,
+      userFullName: "Web Barbie",
+      userContact: 27734657799,
     };
 
     try {
@@ -64,10 +66,11 @@ export default function Index() {
 
       if (!error) {
         setDisableBtn(true);
-        setMessage("Alert has been dispatched, Meet at location");
+        setMessage("Alert has been dispatched to your current location");
         setTimeout(() => {
+          setMessage("");
           setDisableBtn(false);
-        }, 60000);
+        }, delay);
       }
     } catch (error) {
       const message = getErrorMessage(error);
@@ -89,14 +92,16 @@ export default function Index() {
     >
       <Text style={styles.heading}>In Panic</Text>
 
-      <View style={styles.btn}>
-        <Button
-          title={disableBtn ? "PANIC!!" : "Click me"}
-          onPress={handlePanicClick}
-          disabled={disableBtn}
-          color="#fb2c36"
-        />
-      </View>
+      <TouchableOpacity
+        style={disableBtn ? styles.panicBtnDisabled : styles.panicBtn}
+        onPress={handlePanicClick}
+        disabled={disableBtn}
+      >
+        <Text style={styles.panicBtnText}>
+          {disableBtn ? "PANIC!!" : "Click me"}
+        </Text>
+      </TouchableOpacity>
+
       {message ? <Text style={styles.message}>{message}</Text> : null}
       {error ? <Text style={styles.error}>{error}</Text> : null}
     </View>
@@ -104,8 +109,20 @@ export default function Index() {
 }
 
 const styles = StyleSheet.create({
-  btn: {
-    borderRadius: "99px",
+  panicBtn: {
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: "#fb2c36",
+  },
+  panicBtnDisabled: {
+    borderRadius: 8,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    backgroundColor: "lightgray",
+  },
+  panicBtnText: {
+    color: "white",
   },
   message: {
     marginTop: 12,

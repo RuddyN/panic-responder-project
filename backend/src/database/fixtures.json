@@ -53,6 +53,16 @@
       "longitude": 27.96,
       "vehicleInfo": "ZZ 78 FG GP",
       "serviceType": "Security"
+    },
+    {
+      "company": "San Francisco Guard Security",
+      "contact": 32362362346,
+      "companyContact": 46347347,
+      "email": "san@gmail.com",
+      "latitude": 37.7807,
+      "longitude": -122.4723,
+      "vehicleInfo": "SS 66 FGY",
+      "serviceType": "Security"
     }
   ]
 }

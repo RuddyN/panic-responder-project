@@ -17,7 +17,7 @@ import {
 const isAlertValid = (newAlert: PanicAlertModel) => {
   const alerts = getLatestAlertsByUserId(newAlert.userId);
 
-  const hourInMilliseconds = 60 * 60 * 1000;
+  const hourInMilliseconds = 30 * 60 * 1000;
 
   if (alerts?.length > 0) {
     const loggedAlert = alerts.find((alert) => {
