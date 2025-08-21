@@ -32,6 +32,7 @@ const createRespondersTable = `
     company STRING NOT NULL,
     contact INTEGER NOT NULL,
     email STRING NOT NULL,
+    status STRING NOT NULL,
     companyContact INTEGER NOT NULL,
     latitude DECIMAL(10, 8) NOT NULL,
     longitude DECIMAL(11, 8) NOT NULL,
@@ -67,14 +68,15 @@ fixtures.panicAlertData.forEach((data: PanicAlertModel) => {
 
 export const insertResponderAlert = (responder: ResponderModel) => {
   const insertResponderQuery = db.prepare(`INSERT INTO responders (
-      company, contact, companyContact, email, latitude, longitude,  vehicleInfo, serviceType 
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
+      company, contact, companyContact, email, status, latitude, longitude,  vehicleInfo, serviceType 
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
 
   insertResponderQuery.run(
     responder.company,
     responder.contact,
     responder.companyContact,
     responder.email,
+    responder.status,
     responder.latitude,
     responder.longitude,
     responder.vehicleInfo,

@@ -14,10 +14,8 @@ app.use(express.json());
 app.use(cors());
 
 app.post("/panic-alerts", (req, res) => {
-  panicAlertService.addPanicAlert(req.body);
-  res.send({
-    status: 200,
-  });
+  const response = panicAlertService.addPanicAlert(req.body);
+  res.json(response);
 });
 
 app.get("/panic-alerts", (req, res) => {

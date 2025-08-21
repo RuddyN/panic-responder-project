@@ -14,6 +14,12 @@ import {
   PanicAlertStats,
   PanicStatus,
 } from "../../models/PanicAlertModel";
+import haversine from "haversine-distance";
+import ResponderService from "../responder/responder.service";
+import {
+  AlertResponderDistance,
+  ResponderModel,
+} from "../../models/ResponderModel";
 
 const isAlertValid = (newAlert: PanicAlertModel) => {
   const alerts = getLatestAlertsByUserId(newAlert.userId);
@@ -41,14 +47,95 @@ const isAlertValid = (newAlert: PanicAlertModel) => {
   return true;
 };
 
+const distanceCalculator = ({
+  alertLat,
+  alertLong,
+  responderLat,
+  responderLong,
+}: {
+  alertLat: number;
+  alertLong: number;
+  responderLat: number;
+  responderLong: number;
+}) => {
+  //First point in your haversine calculation
+  var point1 = { lat: alertLat, lng: alertLong };
+
+  //Second point in your haversine calculation
+  var point2 = { lat: responderLat, lng: responderLong };
+
+  var haversine_m = haversine(point1, point2); //Results in meters (default)
+  // var haversine_km = haversine_m / 1000; //Results in kilometers
+  return haversine_m;
+};
+
 export class PanicAlertService {
+  // TODO handle error better here
   addPanicAlert = (panicAlert: PanicAlertModel) => {
     if (isAlertValid(panicAlert)) {
-      insertPanicAlert(panicAlert);
+      const nearestResponder = this.checkForClosestResponder(panicAlert);
+
+      if (nearestResponder) {
+        insertPanicAlert({
+          ...panicAlert,
+          status: "ASSIGNED",
+          responderId: nearestResponder.responder.id,
+        });
+
+        return {
+          responderVehicle: nearestResponder.responder.vehicleInfo,
+          responderContact: nearestResponder.responder.companyContact,
+        };
+      } else {
+        insertPanicAlert(panicAlert);
+      }
     } else {
       console.error(
         `User with id ${panicAlert.userId} is attempting to log another alert with an hour of the previous one`
       );
+    }
+  };
+
+  checkForClosestResponder = (
+    alert: PanicAlertModel
+  ): AlertResponderDistance | null => {
+    const responderService = new ResponderService();
+    const responders = responderService.fetchAllResponders();
+
+    // TODO what happens if all responders are assigned
+    const respondersWithDistance = responders
+      .filter((responder) => responder.status !== "ASSIGNED")
+      .reduce((result: any, val: ResponderModel) => {
+        const distance = distanceCalculator({
+          alertLat: alert.latitude,
+          alertLong: alert.longitude,
+          responderLat: val.latitude,
+          responderLong: val.longitude,
+        });
+        const item = 3;
+
+        return [
+          ...result,
+          {
+            distance: distance,
+            responder: val,
+          },
+        ];
+      }, []);
+
+    if (respondersWithDistance) {
+      const nearestResponder = respondersWithDistance.reduce(
+        (res: AlertResponderDistance, val: AlertResponderDistance) => {
+          res = val.distance < res.distance ? val : res;
+
+          return res;
+        },
+        respondersWithDistance[0]
+      );
+
+      return nearestResponder;
+    } else {
+      return null;
     }
   };
 

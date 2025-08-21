@@ -11,6 +11,6 @@ describe("Responder Service", () => {
 
     const response = responderService.fetchAllResponders();
 
-    expect(response).toHaveLength(3);
+    expect(response).toHaveLength(4);
   });
 });

@@ -2495,6 +2495,11 @@ hasown@^2.0.2:
   dependencies:
     function-bind "^1.1.2"
 
+haversine-distance@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/haversine-distance/-/haversine-distance-1.2.4.tgz#4b64f6703594d0ad84b4d73f7c1123df188c7d23"
+  integrity sha512-8MHQBQXR7GXZJIvitCf/ux+gwLtWOxmXNNz5dReG+jJbuvaEoj6QIXlaIO3cPr433BFWM4jececJaLYpwxnZhg==
+
 html-escaper@^2.0.0:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/html-escaper/-/html-escaper-2.0.2.tgz#dfd60027da36a36dfcbe236262c00a5822681453"

@@ -1,7 +1,7 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Geolocation from "@react-native-community/geolocation";
 import { useEffect, useState } from "react";
-import { PanicAlert } from "@/api/types";
+import { PanicAlert, Responder } from "@/api/types";
 import { AddPanicAlert } from "@/api";
 import { getErrorMessage, throttleFunc } from "./utils";
 import { format } from "date-fns";
@@ -31,13 +31,14 @@ export default function Index() {
     };
 
     try {
-      await AddPanicAlert(request);
+      const response = await AddPanicAlert(request);
 
       if (!error) {
         setDisableBtn(true);
-        setMessage("Alert has been dispatched to your current location");
+        setMessage(
+          `Alert has been dispatched to your current location - VehicleInfo ${response.responderVehicle} Contact: ${response.responderContact}`
+        );
         setTimeout(() => {
-          setMessage("");
           setDisableBtn(false);
         }, delay);
       }
