@@ -15,37 +15,6 @@ export default function Index() {
   const [disableBtn, setDisableBtn] = useState(false);
   const [message, setMessage] = useState("");
 
-  const delay = 30 * 60 * 1000;
-
-  useEffect(() => {
-    if (location.latitude !== 0 && location.longitude !== 0) {
-      throttleFunc(createPanicAlert, delay);
-    }
-  }, [location]);
-
-  const getCurrentUserLocation = () => {
-    // DEMO: For when the location is not working as expected
-    if (process.env.EXPO_PUBLIC_RUN_DEBUG === "true") {
-      // Midrand
-      setLocation({ latitude: -25.9819, longitude: 28.1329 });
-      setError(null);
-      return;
-    }
-
-    Geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        setLocation({ latitude, longitude });
-        setError(null);
-      },
-      (err) => {
-        console.error(err);
-        setError(err.message);
-      },
-      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
-    );
-  };
-
   const createPanicAlert = async () => {
     const today = format(new Date(), "yyyy-MM-dd HH:mm:ss");
 
@@ -76,6 +45,37 @@ export default function Index() {
       const message = getErrorMessage(error);
       setError(message);
     }
+  };
+
+  const delay = 10000; // ⏰ This can be longer, leaving it as 10 sec for testing
+
+  useEffect(() => {
+    if (location.latitude !== 0 && location.longitude !== 0) {
+      createPanicAlert();
+    }
+  }, [location]);
+
+  const getCurrentUserLocation = () => {
+    // DEMO: For when the location is not working as expected
+    if (process.env.EXPO_PUBLIC_RUN_DEBUG === "true") {
+      // Midrand
+      setLocation({ latitude: -25.9819, longitude: 28.1329 });
+      setError(null);
+      return;
+    }
+
+    Geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        setLocation({ latitude, longitude });
+        setError(null);
+      },
+      (err) => {
+        console.error(err);
+        setError(err.message);
+      },
+      { enableHighAccuracy: true, timeout: 20000, maximumAge: 1000 }
+    );
   };
 
   const handlePanicClick = () => {

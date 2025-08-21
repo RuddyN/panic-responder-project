@@ -18,7 +18,7 @@ import {
 const isAlertValid = (newAlert: PanicAlertModel) => {
   const alerts = getLatestAlertsByUserId(newAlert.userId);
 
-  const hourInMilliseconds = 30 * 60 * 1000;
+  const timeInMilliseconds = 10000; // ⏰ This can be longer, leaving it as 10 sec for testing
 
   if (alerts?.length > 0) {
     const loggedAlert = alerts.find((alert) => {
@@ -31,7 +31,7 @@ const isAlertValid = (newAlert: PanicAlertModel) => {
 
         const diffInMilliseconds = Math.abs(createdAtTime - newAlertTime);
 
-        return diffInMilliseconds <= hourInMilliseconds;
+        return diffInMilliseconds <= timeInMilliseconds;
       }
     });
 

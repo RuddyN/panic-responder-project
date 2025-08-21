@@ -1,11 +1,14 @@
 export const throttleFunc = (func: () => void, delay: number) => {
   let timeout: null | number = null;
-  if (!timeout) {
-    func();
-    timeout = setTimeout(() => {
-      timeout = null;
-    }, delay);
-  }
+
+  return () => {
+    if (!timeout) {
+      func();
+      timeout = setTimeout(() => {
+        timeout = null;
+      }, delay);
+    }
+  };
 };
 
 export const getErrorMessage = (error: unknown) => {

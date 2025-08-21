@@ -79,7 +79,8 @@ describe("Panic alerts", () => {
 
     const panicAlertService = new PanicAlertService();
     const currentDate = new Date();
-    currentDate.setMinutes(currentDate.getMinutes() + 5);
+    // ⏰ Change this back to the correct time
+    currentDate.setSeconds(currentDate.getSeconds() + 1);
 
     const updatedAlert = {
       id: 6,
