@@ -6,6 +6,7 @@ import {
   getResponderById,
   getLatestAlertsByUserId,
   getStats,
+  patchResponderStatus,
 } from "../../database/app";
 import EntityNotFoundError from "../../middleware/entity-no-found-error";
 import {
@@ -14,86 +15,65 @@ import {
   PanicAlertStats,
   PanicStatus,
 } from "../../models/PanicAlertModel";
-import haversine from "haversine-distance";
+
 import ResponderService from "../responder/responder.service";
 import {
   AlertResponderDistance,
   ResponderModel,
 } from "../../models/ResponderModel";
-
-const isAlertValid = (newAlert: PanicAlertModel) => {
-  const alerts = getLatestAlertsByUserId(newAlert.userId);
-
-  const timeInMilliseconds = 10000; // ⏰ This can be longer, leaving it as 10 sec for testing
-
-  if (alerts?.length > 0) {
-    const loggedAlert = alerts.find((alert) => {
-      const convertOldDate = new Date(alert.createdAt);
-      const convertNewDate = new Date(newAlert.createdAt);
-
-      if (convertOldDate.getDate() === convertNewDate.getDate()) {
-        const createdAtTime = convertOldDate.getTime();
-        const newAlertTime = convertNewDate.getTime();
-
-        const diffInMilliseconds = Math.abs(createdAtTime - newAlertTime);
-
-        return diffInMilliseconds <= timeInMilliseconds;
-      }
-    });
-
-    return !loggedAlert;
-  }
-
-  return true;
-};
-
-const distanceCalculator = ({
-  alertLat,
-  alertLong,
-  responderLat,
-  responderLong,
-}: {
-  alertLat: number;
-  alertLong: number;
-  responderLat: number;
-  responderLong: number;
-}) => {
-  //First point in your haversine calculation
-  var point1 = { lat: alertLat, lng: alertLong };
-
-  //Second point in your haversine calculation
-  var point2 = { lat: responderLat, lng: responderLong };
-
-  var haversine_m = haversine(point1, point2); //Results in meters (default)
-  // var haversine_km = haversine_m / 1000; //Results in kilometers
-  return haversine_m;
-};
+import { distanceCalculator } from "./utils";
 
 export class PanicAlertService {
-  // TODO handle error better here
   addPanicAlert = (panicAlert: PanicAlertModel) => {
-    if (isAlertValid(panicAlert)) {
-      const nearestResponder = this.checkForClosestResponder(panicAlert);
-
-      if (nearestResponder) {
-        insertPanicAlert({
-          ...panicAlert,
-          status: "ASSIGNED",
-          responderId: nearestResponder.responder.id,
-        });
-
-        return {
-          responderVehicle: nearestResponder.responder.vehicleInfo,
-          responderContact: nearestResponder.responder.companyContact,
-        };
-      } else {
-        insertPanicAlert(panicAlert);
-      }
-    } else {
+    if (!this.isAlertValid(panicAlert)) {
       console.error(
         `User with id ${panicAlert.userId} is attempting to log another alert with an hour of the previous one`
       );
+      return
     }
+
+    const nearestResponder = this.checkForClosestResponder(panicAlert);
+
+    if (nearestResponder) {
+      insertPanicAlert({
+        ...panicAlert,
+        status: "ASSIGNED",
+        responderId: nearestResponder.responder.id,
+      });
+
+      return {
+        responderVehicle: nearestResponder.responder.vehicleInfo,
+        responderContact: nearestResponder.responder.companyContact,
+      };
+    }
+
+    insertPanicAlert(panicAlert);
+  };
+
+  isAlertValid = (newAlert: PanicAlertModel) => {
+    const alerts = getLatestAlertsByUserId(newAlert.userId);
+
+    const timeInMilliseconds = 10000; // ⏰ This can be longer, leaving it as 10 sec for testing
+
+    if (alerts?.length > 0) {
+      const loggedAlert = alerts.find((alert) => {
+        const convertOldDate = new Date(alert.createdAt);
+        const convertNewDate = new Date(newAlert.createdAt);
+
+        if (convertOldDate.getDate() === convertNewDate.getDate()) {
+          const createdAtTime = convertOldDate.getTime();
+          const newAlertTime = convertNewDate.getTime();
+
+          const diffInMilliseconds = Math.abs(createdAtTime - newAlertTime);
+
+          return diffInMilliseconds <= timeInMilliseconds;
+        }
+      });
+
+      return !loggedAlert;
+    }
+
+    return true;
   };
 
   checkForClosestResponder = (
@@ -112,7 +92,6 @@ export class PanicAlertService {
           responderLat: val.latitude,
           responderLong: val.longitude,
         });
-        const item = 3;
 
         return [
           ...result,
@@ -134,26 +113,28 @@ export class PanicAlertService {
       );
 
       return nearestResponder;
-    } else {
-      return null;
     }
+
+    return null;
   };
 
   updatePanicAlert = (panicAlert: PanicAlertModel) => {
     if (panicAlert.responderId) {
-      try {
-        getResponderById(panicAlert.responderId);
-      } catch (error) {
+      const responder = getResponderById(panicAlert.responderId);
+      patchPanicAlert(panicAlert);
+      patchResponderStatus(panicAlert.responderId, "ASSIGNED");
+
+      if (!responder) {
         console.error(
           `Responder with id ${panicAlert.responderId} does not exist`
         );
         throw new EntityNotFoundError("Responder not found", 404);
       }
+
+      return;
     }
 
-    const response = patchPanicAlert(panicAlert);
-
-    return response;
+    patchPanicAlert(panicAlert);
   };
 
   fetchPanicAlerts = (): PanicAlertModel[] => {

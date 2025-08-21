@@ -4,6 +4,7 @@ export type Responder = {
   contact: number;
   companyContact: number;
   email: string;
+  status: string;
   latitude: number;
   longitude: number;
   vehicleInfo: string;

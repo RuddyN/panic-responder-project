@@ -93,7 +93,7 @@ export const patchPanicAlert = (alert: PanicAlertModel) => {
     `UPDATE panicAlerts SET latitude = ?, longitude = ?, status = ?, createdAt = ?, updatedAt = ?, userId = ?,  userFullName = ?, userContact = ?, responderId = ? WHERE id = ?`
   );
 
-  updatePanicAlertQuery.run(
+  const result = updatePanicAlertQuery.run(
     alert.latitude,
     alert.longitude,
     alert.status,
@@ -105,6 +105,16 @@ export const patchPanicAlert = (alert: PanicAlertModel) => {
     alert.responderId,
     alert.id
   );
+
+  return result;
+};
+
+export const patchResponderStatus = (id: number, status: string) => {
+  const updatePanicAlertQuery = db.prepare(
+    `UPDATE responders SET status = ? WHERE id = ?`
+  );
+
+  updatePanicAlertQuery.run(status, id);
 };
 
 export const getPanicAlertById = (id: number): PanicAlertModel => {

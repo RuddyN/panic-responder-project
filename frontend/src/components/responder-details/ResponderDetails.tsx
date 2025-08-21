@@ -31,6 +31,10 @@ export function ResponderDetails({ responder }: { responder: Responder }) {
             <td>{responder?.email}</td>
           </tr>
           <tr>
+            <td>Status:</td>
+            <td>{responder?.status}</td>
+          </tr>
+          <tr>
             <td>Responder company:</td>
             <td>{responder?.company}</td>
           </tr>

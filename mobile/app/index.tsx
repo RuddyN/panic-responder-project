@@ -1,9 +1,9 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Geolocation from "@react-native-community/geolocation";
 import { useEffect, useState } from "react";
-import { PanicAlert, Responder } from "@/api/types";
+import { PanicAlert } from "@/api/types";
 import { AddPanicAlert } from "@/api";
-import { getErrorMessage, throttleFunc } from "./utils";
+import { getErrorMessage } from "./utils";
 import { format } from "date-fns";
 
 export default function Index() {
