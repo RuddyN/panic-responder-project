@@ -16,5 +16,13 @@ describe("Panic Alert App", () => {
     expect(screen.getByTestId("resolved-alerts")).toHaveTextContent("5");
   });
 
-  it.todo("find a way to test the map being clicked");
+  it("Should load responder markers to the ap", async () => {
+    renderInWrapper(<App />);
+
+    const markerParent = screen.getByTestId("marker-foo-1");
+
+    await waitFor(() => {
+      expect(markerParent).toBeInTheDocument();
+    });
+  });
 });

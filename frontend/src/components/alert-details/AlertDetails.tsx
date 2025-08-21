@@ -45,7 +45,6 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
       updatedAt: new Date(),
     };
 
-    // TODO: handle error case
     mutate(reqBody, {
       onSuccess: () => {
         refetch();
@@ -56,7 +55,6 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
     });
   };
 
-  //TODO on demand reload
   return (
     <div className="details-container">
       <div className="header">
@@ -66,7 +64,12 @@ export function AlertDetails({ panicAlert }: { panicAlert: PanicAlert }) {
           <button name="edit" aria-label="edit" onClick={() => setIsEdit(true)}>
             <Edit2 size={16} />
           </button>
-          <button name="save" aria-label="save" onClick={onSaveAlert} disabled={!isEdit}>
+          <button
+            name="save"
+            aria-label="save"
+            onClick={onSaveAlert}
+            disabled={!isEdit}
+          >
             <Save size={16} />
           </button>
         </div>

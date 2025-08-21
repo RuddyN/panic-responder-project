@@ -82,6 +82,7 @@ function App() {
                     onClick={() => handleResponderSelect(responder)}
                     className="car"
                     strokeWidth="3"
+                    data-testid={`marker-foo-${index}`}  
                   />
                 }
                 anchor={[responder.latitude, responder.longitude]}

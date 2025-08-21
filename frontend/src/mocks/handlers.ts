@@ -19,5 +19,8 @@ export const handlers = [
   http.get("http://localhost:3000/panic-alerts-stats", () => {
     return HttpResponse.json(fixture.alertStats);
   }),
+  http.get("http://localhost:3000/responders", () => {
+    return HttpResponse.json(fixture.responderData);
+  }),
   updatePanicAlertMock,
 ];
