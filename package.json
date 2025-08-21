@@ -1,0 +1,32 @@
+{
+  "name": "panic-responder-project",
+  "version": "1.0.0",
+  "description": "The backend, frontend and partner system application showcasing how a panic alert system can work",
+  "homepage": "https://github.com/RuddyN/panic-responder-project#readme",
+  "bugs": {
+    "url": "https://github.com/RuddyN/panic-responder-project/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/RuddyN/panic-responder-project.git"
+  },
+  "license": "ISC",
+  "author": "Ruddy Marriday",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "run-backend": "cd ./backend && yarn dev",
+    "run-frontend": "cd ./frontend && yarn dev",
+    "run-mobile": "cd ./mobile && yarn web",
+    "run-all": "npm-run-all --parallel run-backend run-frontend run-mobile",
+    "install-backend": "cd ./backend && yarn install",
+    "install-frontend": "cd ./frontend && yarn install",
+    "install-mobile": "cd ./mobile && yarn install",
+    "install-current": "yarn install",
+    "install-all": "npm-run-all --parallel install-current install-backend install-frontend install-mobile"
+  },
+  "dependencies": {
+    "npm-run-all": "^4.1.5"
+  }
+}
