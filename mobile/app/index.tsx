@@ -110,10 +110,10 @@ export default function Index() {
         <View style={styles.responderDetails}>
           <Text style={styles.message}>{message}</Text>
           <Text>
-            Drivers license: <strong>{responder.responderVehicle}</strong>
+            Drivers license: <Text style={styles.boldText}>{responder.responderVehicle}</Text>
           </Text>
           <Text>
-            Drivers Contact: <strong>{responder.responderContact}</strong>
+            Drivers Contact: <Text style={styles.boldText}>{responder.responderContact}</Text>
           </Text>
         </View>
       ) : null}
@@ -137,6 +137,9 @@ const styles = StyleSheet.create({
   },
   panicBtnText: {
     color: "white",
+  },
+  boldText: {
+    fontWeight: '700'
   },
   responderDetails: {
     marginTop: 12,

@@ -39,7 +39,7 @@ function App() {
 
   return (
     <section className="app-container">
-      <h1 className="header-title">Panic Alert System</h1>
+      <h1 className="header-title">Panic Monitoring System</h1>
       <div className="stats">
         <div className="stats-block">
           <h4>🚨 New</h4>
