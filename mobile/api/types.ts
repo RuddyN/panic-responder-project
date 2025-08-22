@@ -11,5 +11,5 @@ export type PanicAlert = {
 
 export type Responder = {
   responderVehicle: string;
-  responderContact: number | null;
+  responderContact: number;
 };

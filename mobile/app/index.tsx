@@ -16,7 +16,7 @@ export default function Index() {
   const [message, setMessage] = useState("");
   const [responder, setResponder] = useState<Responder>({
     responderVehicle: "",
-    responderContact: null,
+    responderContact: 0,
   });
 
   const createPanicAlert = async () => {

@@ -104,9 +104,7 @@ function App() {
           {selectedAlert || selectedResponder ? (
             getDetails()
           ) : (
-            <div className="empty-details">
-              <p>Select a marker</p>
-            </div>
+            <p className="empty-details">Select a marker</p>
           )}
         </div>
       </div>

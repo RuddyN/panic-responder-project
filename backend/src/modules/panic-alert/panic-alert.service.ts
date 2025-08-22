@@ -82,7 +82,6 @@ export class PanicAlertService {
     const responderService = new ResponderService();
     const responders = responderService.fetchAllResponders();
 
-    // TODO what happens if all responders are assigned
     const respondersWithDistance = responders
       .filter((responder) => responder.status !== "ASSIGNED")
       .reduce((result: any, val: ResponderModel) => {
