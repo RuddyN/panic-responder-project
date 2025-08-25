@@ -8,7 +8,7 @@ describe("Panic Alert App", () => {
   it("renders a page with stats", async () => {
     renderInWrapper(<App />);
 
-    expect(screen.getByText("Panic Alert System")).toBeInTheDocument();
+    expect(screen.getByText("Panic Monitoring System")).toBeInTheDocument();
 
     await waitFor(() => {
       expect(screen.getByTestId("new-alerts")).toHaveTextContent("2");

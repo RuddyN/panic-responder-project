@@ -1,9 +1,9 @@
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 import Geolocation from "@react-native-community/geolocation";
 import { useEffect, useState } from "react";
-import { PanicAlert } from "@/api/types";
+import { PanicAlert, Responder } from "@/api/types";
 import { AddPanicAlert } from "@/api";
-import { getErrorMessage, throttleFunc } from "./utils";
+import { getErrorMessage } from "./utils";
 import { format } from "date-fns";
 
 export default function Index() {
@@ -14,6 +14,10 @@ export default function Index() {
   const [error, setError] = useState<string | null>();
   const [disableBtn, setDisableBtn] = useState(false);
   const [message, setMessage] = useState("");
+  const [responder, setResponder] = useState<Responder>({
+    responderVehicle: "",
+    responderContact: 0,
+  });
 
   const createPanicAlert = async () => {
     const today = format(new Date(), "yyyy-MM-dd HH:mm:ss");
@@ -31,15 +35,15 @@ export default function Index() {
     };
 
     try {
-      await AddPanicAlert(request);
+      const response = await AddPanicAlert(request);
 
       if (!error) {
         setDisableBtn(true);
         setMessage("Alert has been dispatched to your current location");
         setTimeout(() => {
-          setMessage("");
           setDisableBtn(false);
         }, delay);
+        setResponder(response);
       }
     } catch (error) {
       const message = getErrorMessage(error);
@@ -102,7 +106,17 @@ export default function Index() {
         </Text>
       </TouchableOpacity>
 
-      {message ? <Text style={styles.message}>{message}</Text> : null}
+      {message ? (
+        <View style={styles.responderDetails}>
+          <Text style={styles.message}>{message}</Text>
+          <Text>
+            Drivers license: <Text style={styles.boldText}>{responder.responderVehicle}</Text>
+          </Text>
+          <Text>
+            Drivers Contact: <Text style={styles.boldText}>{responder.responderContact}</Text>
+          </Text>
+        </View>
+      ) : null}
       {error ? <Text style={styles.error}>{error}</Text> : null}
     </View>
   );
@@ -124,8 +138,18 @@ const styles = StyleSheet.create({
   panicBtnText: {
     color: "white",
   },
-  message: {
+  boldText: {
+    fontWeight: '700'
+  },
+  responderDetails: {
     marginTop: 12,
+    display: "flex",
+    flexDirection: "column",
+    gap: 6,
+  },
+  message: {
+    fontSize: 18,
+    marginBottom: 18,
   },
   error: {
     marginTop: 12,

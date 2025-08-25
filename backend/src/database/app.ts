@@ -32,6 +32,7 @@ const createRespondersTable = `
     company STRING NOT NULL,
     contact INTEGER NOT NULL,
     email STRING NOT NULL,
+    status STRING NOT NULL,
     companyContact INTEGER NOT NULL,
     latitude DECIMAL(10, 8) NOT NULL,
     longitude DECIMAL(11, 8) NOT NULL,
@@ -67,14 +68,15 @@ fixtures.panicAlertData.forEach((data: PanicAlertModel) => {
 
 export const insertResponderAlert = (responder: ResponderModel) => {
   const insertResponderQuery = db.prepare(`INSERT INTO responders (
-      company, contact, companyContact, email, latitude, longitude,  vehicleInfo, serviceType 
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?)`);
+      company, contact, companyContact, email, status, latitude, longitude,  vehicleInfo, serviceType 
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`);
 
   insertResponderQuery.run(
     responder.company,
     responder.contact,
     responder.companyContact,
     responder.email,
+    responder.status,
     responder.latitude,
     responder.longitude,
     responder.vehicleInfo,
@@ -91,7 +93,7 @@ export const patchPanicAlert = (alert: PanicAlertModel) => {
     `UPDATE panicAlerts SET latitude = ?, longitude = ?, status = ?, createdAt = ?, updatedAt = ?, userId = ?,  userFullName = ?, userContact = ?, responderId = ? WHERE id = ?`
   );
 
-  updatePanicAlertQuery.run(
+  const result = updatePanicAlertQuery.run(
     alert.latitude,
     alert.longitude,
     alert.status,
@@ -103,6 +105,16 @@ export const patchPanicAlert = (alert: PanicAlertModel) => {
     alert.responderId,
     alert.id
   );
+
+  return result;
+};
+
+export const patchResponderStatus = (id: number, status: string) => {
+  const updatePanicAlertQuery = db.prepare(
+    `UPDATE responders SET status = ? WHERE id = ?`
+  );
+
+  updatePanicAlertQuery.run(status, id);
 };
 
 export const getPanicAlertById = (id: number): PanicAlertModel => {

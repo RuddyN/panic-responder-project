@@ -44,10 +44,18 @@ p {
 
   .empty-details {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100%;
     color: lightgray;
+  }
+
+  .legend {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    margin-bottom: 0.5rem;
   }
 
   .stats {

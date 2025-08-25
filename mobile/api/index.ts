@@ -1,4 +1,4 @@
-import { PanicAlert } from "./types";
+import { PanicAlert, Responder } from "./types";
 
 const BASEURL = "http://localhost:3000";
 
@@ -6,7 +6,7 @@ export const AddPanicAlert = async (payload: PanicAlert) => {
   const response = await fetch(`${BASEURL}/panic-alerts`, {
     method: "POST",
     body: JSON.stringify(payload),
-     headers: {
+    headers: {
       "Content-Type": "application/json",
     },
   });
@@ -17,5 +17,5 @@ export const AddPanicAlert = async (payload: PanicAlert) => {
     );
   }
 
-  return response.json() as Promise<{ status: number }>;
+  return response.json() as Promise<Responder>;
 };

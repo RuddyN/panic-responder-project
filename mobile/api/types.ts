@@ -6,5 +6,10 @@ export type PanicAlert = {
   userContact: number;
   status: string;
   createdAt: string;
-  updatedAt: string
+  updatedAt: string;
+};
+
+export type Responder = {
+  responderVehicle: string;
+  responderContact: number;
 };

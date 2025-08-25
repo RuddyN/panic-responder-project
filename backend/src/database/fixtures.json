@@ -39,6 +39,7 @@
       "contact": 275674329988,
       "companyContact": 275674329988,
       "email": "ADT@gmail.com",
+      "status":"AVAILABLE",
       "latitude": -29.1129,
       "longitude": 26.2149,
       "vehicleInfo": "TY 78 FG GP",
@@ -49,9 +50,21 @@
       "contact": 275674329988,
       "companyContact": 275674329988,
       "email": "redGuard@gmail.com",
+      "status":"AVAILABLE",
       "latitude": -26.0917,
       "longitude": 27.96,
       "vehicleInfo": "ZZ 78 FG GP",
+      "serviceType": "Security"
+    },
+    {
+      "company": "Police",
+      "contact": 36346,
+      "companyContact": 463467347,
+      "email": "police@gmail.com",
+      "status":"ASSIGNED",
+      "latitude": -26.0917,
+      "longitude": 27.96,
+      "vehicleInfo": "TT 78 FG GP",
       "serviceType": "Security"
     },
     {
@@ -59,6 +72,7 @@
       "contact": 32362362346,
       "companyContact": 46347347,
       "email": "san@gmail.com",
+      "status":"AVAILABLE",
       "latitude": 37.7807,
       "longitude": -122.4723,
       "vehicleInfo": "SS 66 FGY",

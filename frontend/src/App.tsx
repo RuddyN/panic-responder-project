@@ -6,7 +6,7 @@ import { useState } from "react";
 import { AlertDetails } from "./components/alert-details/AlertDetails";
 import { useResponders } from "./hooks/responder";
 import type { Responder } from "./api/responders/types";
-import { CarFrontIcon } from "lucide-react";
+import { CarFrontIcon, LucideLocationEdit } from "lucide-react";
 import { ResponderDetails } from "./components/responder-details/ResponderDetails";
 
 function App() {
@@ -39,7 +39,7 @@ function App() {
 
   return (
     <section className="app-container">
-      <h1 className="header-title">Panic Alert System</h1>
+      <h1 className="header-title">Panic Monitoring System</h1>
       <div className="stats">
         <div className="stats-block">
           <h4>🚨 New</h4>
@@ -57,6 +57,15 @@ function App() {
           <h3>🎯 Total today</h3>
           <p>{stats?.totalAlertsToday}</p>
         </div>
+      </div>
+      <div className="legend">
+        <LucideLocationEdit color="red" /> NEW
+        <LucideLocationEdit color="orange" />
+        ASSIGNED
+        <CarFrontIcon strokeWidth="3" color="green" />
+        AVAILABLE
+        <CarFrontIcon strokeWidth="3" color="blue" />
+        ASSIGNED
       </div>
       <div className="map-details">
         <Map height={400} center={[-26.204103, 28.047304]} defaultZoom={5}>
@@ -82,7 +91,8 @@ function App() {
                     onClick={() => handleResponderSelect(responder)}
                     className="car"
                     strokeWidth="3"
-                    data-testid={`marker-foo-${index}`}  
+                    data-testid={`marker-foo-${index}`}
+                    color={responder.status === "ASSIGNED" ? "blue" : "green"}
                   />
                 }
                 anchor={[responder.latitude, responder.longitude]}
@@ -94,7 +104,7 @@ function App() {
           {selectedAlert || selectedResponder ? (
             getDetails()
           ) : (
-            <div className="empty-details">Select a marker</div>
+            <p className="empty-details">Select a marker</p>
           )}
         </div>
       </div>

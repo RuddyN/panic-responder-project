@@ -19,6 +19,7 @@ jest.mock("./../../database/app.ts", () => ({
   })),
   insertPanicAlert: jest.fn(),
   patchPanicAlert: jest.fn(),
+  getAllResponders: jest.fn(() => fixture.responderData),
   getLatestAlertsByUserId: jest.fn(() => [
     {
       id: 1,
